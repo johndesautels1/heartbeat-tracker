@@ -5417,7 +5417,7 @@
                 document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
                 document.getElementById('heartRate').value = bp.pulse;
             } catch (error) {
-                console.error('BP connect error:', e);
+                console.error('BP connect error:', error);
                 alert('Failed to connect to BP device.');
             }
         }
@@ -5718,77 +5718,38 @@
                 pcpPhone: document.getElementById('pcpPhone').value,
                 pcpLastContact: document.getElementById('pcpLastContact').value,
                 pcpNextAppt: document.getElementById('pcpNextAppt').value,
-                pcpInterval: document.getElementById('pcpInterval').value,
-                cardioName: document.getElementById('cardioName').value,
-                cardioPhone: document.getElementById('cardioPhone').value,
-                cardioLastContact: document.getElementById('cardioLastContact').value,
-                cardioNextAppt: document.getElementById('cardioNextAppt').value,
-                cardioInterval: document.getElementById('cardioInterval').value,
+                cardiologistName: document.getElementById('cardiologistName').value,
+                cardiologistPhone: document.getElementById('cardiologistPhone').value,
+                cardiologistLastContact: document.getElementById('cardiologistLastContact').value,
+                cardiologistNextAppt: document.getElementById('cardiologistNextAppt').value,
                 surgeonName: document.getElementById('surgeonName').value,
                 surgeonPhone: document.getElementById('surgeonPhone').value,
                 surgeonLastContact: document.getElementById('surgeonLastContact').value,
                 surgeonNextAppt: document.getElementById('surgeonNextAppt').value,
-                surgeonInterval: document.getElementById('surgeonInterval').value,
-                epName: document.getElementById('epName').value,
-                epPhone: document.getElementById('epPhone').value,
-                epLastContact: document.getElementById('epLastContact').value,
-                epNextAppt: document.getElementById('epNextAppt').value,
-                epInterval: document.getElementById('epInterval').value,
-                rehabName: document.getElementById('rehabName').value,
-                rehabPhone: document.getElementById('rehabPhone').value,
-                rehabLastSession: document.getElementById('rehabLastSession').value,
-                rehabSessionsPerWeek: document.getElementById('rehabSessionsPerWeek').value,
-                rehabTotalSessions: document.getElementById('rehabTotalSessions').value,
-                rehabCompletedSessions: document.getElementById('rehabCompletedSessions').value,
-                recoveryOutcomes: Array.from(document.querySelectorAll('input[name="recoveryOutcome"]:checked')).map(cb => cb.value),
-                eventDate: document.getElementById('eventDate').value,
+                therapistName: document.getElementById('therapistName').value,
+                therapistPhone: document.getElementById('therapistPhone').value,
+                therapistLastContact: document.getElementById('therapistLastContact').value,
+                therapistNextAppt: document.getElementById('therapistNextAppt').value,
                 whatHappened: document.getElementById('whatHappened').value,
-                interventions: document.getElementById('interventions').value,
-                patientResponse: document.getElementById('patientResponse').value
+                whenHappened: document.getElementById('whenHappened').value,
+                severity: document.getElementById('severity').value,
+                actionTaken: document.getElementById('actionTaken').value,
+                outcome: document.getElementById('outcome').value,
+                followUp: document.getElementById('followUp').value,
+                notes: document.getElementById('notes').value
             };
-            document.querySelectorAll('.adl-scale').forEach(scale => {
-                const selected = scale.querySelector('.adl-btn.selected');
-                if (selected) formData.adlScores[scale.dataset.adl] = parseInt(selected.dataset.value);
-            });
-            document.querySelectorAll('.severity-scale').forEach(scale => {
-                const selected = scale.querySelector('.severity-btn.selected');
-                if (selected) formData.sideEffects[scale.dataset.effect] = parseInt(selected.dataset.value);
-            });
-            const oldLength = entries.length;
-            const recoveryAssessment = calculateRecoveryScore(formData);
-            formData.recoveryAssessment = recoveryAssessment;
-            formData.usedCustom = physicianUnlocked;
+            
+            // Save to encrypted storage
             entries.unshift(formData);
             setEncryptedStorage('cardiacEntries', entries);
-            syncToBackend(formData)
-                .then(() => console.log('Entry synced successfully'))
-                .catch(error => console.error('Sync error:', error));
-            logAudit('save-entry', { score: recoveryAssessment.recoveryScore });
-            // Update legend and why-status
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            const pillMap = { excellent: 'normalPill', good: 'normalPill', fair: 'watchPill', poor: 'alertPill', critical: 'alertPill' };
-            document.getElementById(pillMap[recoveryAssessment.className]).classList.add('active');
-            let breakdown = '';
-            for (let [k, v] of Object.entries(recoveryAssessment.subScores)) {
-                breakdown += `${k}: ${v}/${weights[k]}<br>`;
-            }
-            document.getElementById('statusBreakdown').innerHTML = breakdown;
-            document.getElementById('whyStatus').classList.add('open');
-            // Toast
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = `Logged: ${formData.date} - Score ${recoveryAssessment.recoveryScore}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-            // Alert
-            if (recoveryAssessment.className === 'critical') {
-                alert('🚨 CRITICAL RECOVERY SCORE!\n\n' + recoveryAssessment.message + '\n\nPlease contact your medical provider immediately.');
-            } else {
-                alert('✅ Entry saved successfully!\n\nRecovery Score: ' + recoveryAssessment.recoveryScore + '/100 (Grade ' + recoveryAssessment.grade + ')\n' + recoveryAssessment.status);
-            }
-            // Re-render and scroll
+            
+            // Show success message
+            alert('Entry saved successfully!');
+            
+            // Refresh entries display
             renderEntries(true);
             document.getElementById('entriesContainer').scrollIntoView({ behavior: 'smooth' });
+            
             // Post-save check
             if (entries.length !== oldLength + 1) {
                 alert('Save may have failed. Please retry.');
@@ -5797,93 +5758,92 @@
             // Clear form
             document.getElementById('clearForm').click();
         });
-        // Device Integration - Web Bluetooth
-        async function connectBPDevice() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [0x1810] }] // Blood Pressure service UUID
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(0x1810);
-                const characteristic = await service.getCharacteristic(0x2A35); // Blood Pressure Measurement
-                const value = await characteristic.readValue();
-                const bp = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
-                document.getElementById('heartRate').value = bp.pulse;
-            } catch (error) {
-                console.error('BP connect error:', error);
-                alert('Failed to connect to BP device.');
-            }
-        }
-        async function connectPulseOxDevice() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [0x1822] }] // Pulse Oximeter service UUID
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(0x1822);
-                const characteristic = await service.getCharacteristic(0x2A5F); // PLX Spot-Check Measurement
-                const value = await characteristic.readValue();
-                const ox = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('oxygenSat').value = ox.spO2;
-                document.getElementById('heartRate').value = ox.pulse;
-            } catch (error) {
-                console.error('Pulse Ox connect error:', error);
-                alert('Failed to connect to Pulse Ox device.');
-            }
-        }
-        // IEEE 11073 Parser (32-bit FLOAT)
-        function parseIEEE11073Float(dataview) {
-            const exponent = dataview.getInt8(3);
-            let mantissa = dataview.getInt32(0, true) & 0x00ffffff;
-            if (mantissa >= Math.pow(2, 23)) mantissa -= Math.pow(2, 24);
-            return mantissa * Math.pow(10, exponent);
-        }
-        // Real-time validation
-        // Initial saved context
-        const savedProcedures = getEncryptedStorage('procedures', []);
-        const savedHospitalStay = getEncryptedStorage('hospitalStay');
-        const savedHospitalComplications = getEncryptedStorage('hospitalComplications');
-        if (savedProcedures.length) {
-            document.querySelectorAll('#procedures option').forEach(opt => {
-                if (savedProcedures.includes(opt.value)) opt.selected = true;
-            });
-        }
-        if (savedHospitalStay) document.getElementById('hospitalStay').value = savedHospitalStay;
-        if (savedHospitalComplications) document.getElementById('hospitalComplications').value = savedHospitalComplications;
-        // Save context to encrypted storage
-        document.getElementById('procedures').addEventListener('change', function () {
-            const selected = Array.from(this.selectedOptions).map(opt => opt.value);
-            setEncryptedStorage('procedures', selected);
-            logAudit('update-procedures', { procedures: selected });
+        
+        // Add missing event listeners for buttons
+        document.getElementById('newEntry').addEventListener('click', function() {
+            document.getElementById('clearForm').click();
+            document.getElementById('entryForm').scrollIntoView({ behavior: 'smooth' });
         });
-        document.getElementById('hospitalStay').addEventListener('change', function () {
-            setEncryptedStorage('hospitalStay', this.value);
-            logAudit('update-hospital-stay', { days: this.value });
-        });
-        document.getElementById('hospitalComplications').addEventListener('change', function () {
-            setEncryptedStorage('hospitalComplications', this.value);
-            logAudit('update-hospital-complications', { complication: this.value });
-        });
-        // Modals
-        function openScoringModal() {
-            document.getElementById('scoringModal').style.display = 'block';
-            logAudit('view-scoring-guide');
-        }
-        function closeScoringModal() {
-            document.getElementById('scoringModal').style.display = 'none';
-        }
-        function openWhatsNewModal() {
-            document.getElementById('whatsNewModal').style.display = 'block';
-        }
-        function closeWhatsNewModal() {
-            document.getElementById('whatsNewModal').style.display = 'none';
-        }
-        window.onclick = function (event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+        
+        document.getElementById('exportCsv').addEventListener('click', function() {
+            const entries = getEncryptedStorage('cardiacEntries', []);
+            if (entries.length === 0) {
+                alert('No entries to export');
+                return;
             }
-        }
+            
+            // Create CSV content
+            const headers = ['Date', 'Time', 'Weight', 'Blood Pressure', 'Heart Rate', 'Oxygen Saturation', 'Temperature', 'Chest Pain', 'Body Pain', 'Wellbeing', 'Notes'];
+            const csvContent = [
+                headers.join(','),
+                ...entries.map(entry => [
+                    entry.entryDate || '',
+                    entry.entryTime || '',
+                    entry.weight || '',
+                    entry.bloodPressure || '',
+                    entry.heartRate || '',
+                    entry.oxygenSat || '',
+                    entry.temperature || '',
+                    entry.chestPain || '',
+                    entry.bodyPain || '',
+                    entry.wellbeing || '',
+                    (entry.notes || '').replace(/,/g, ';')
+                ].join(','))
+            ].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cardiac-recovery-${new Date().toISOString().split('T')[0]}.csv`;
+        });
+        
+        // Add missing event listeners for buttons
+        document.getElementById('newEntry').addEventListener('click', function() {
+            document.getElementById('clearForm').click();
+            document.getElementById('entryForm').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        document.getElementById('exportCsv').addEventListener('click', function() {
+            const entries = getEncryptedStorage('cardiacEntries', []);
+            if (entries.length === 0) {
+                alert('No entries to export');
+                return;
+            }
+            
+            // Create CSV content
+            const headers = ['Date', 'Time', 'Weight', 'Blood Pressure', 'Heart Rate', 'Oxygen Saturation', 'Temperature', 'Chest Pain', 'Body Pain', 'Wellbeing', 'Notes'];
+            const csvContent = [
+                headers.join(','),
+                ...entries.map(entry => [
+                    entry.entryDate || '',
+                    entry.entryTime || '',
+                    entry.weight || '',
+                    entry.bloodPressure || '',
+                    entry.heartRate || '',
+                    entry.oxygenSat || '',
+                    entry.temperature || '',
+                    entry.chestPain || '',
+                    entry.bodyPain || '',
+                    entry.wellbeing || '',
+                    (entry.notes || '').replace(/,/g, ';')
+                ].join(','))
+            ].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cardiac-recovery-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+        
+        document.getElementById('exportPdf').addEventListener('click', function() {
+            window.print();
+        });
     </script>
 </body>
 </html>

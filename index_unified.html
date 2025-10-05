@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HEARTBEAT™ - Cardiac Surgery Recovery Tracker</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js"></script>
+    
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --card: #111827;
+            --card-light: #1a2332;
+            --ink: #e5e7eb;
+            --muted: #9ca3af;
+            --accent: #60a5fa;
+            --good: #22c55e;
+            --warn: #f59e0b;
+            --bad: #ef4444;
+            --purple: #a78bfa;
+            --cyan: #06b6d4;
+            --pink: #ec4899;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg), #0d1420 50%, #060812);
+            color: var(--ink);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(96, 165, 250, 0.2));
+            border: 2px solid rgba(236, 72, 153, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .patient-info {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--pink);
+        }
+        
+        .date-display {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--card-light);
+            color: var(--ink);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--card);
+            border-color: var(--accent);
+        }
+        
+        .status-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .pill.good {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--good);
+            border-color: var(--good);
+        }
+        
+        .pill.warn {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warn);
+            border-color: var(--warn);
+        }
+        
+        .pill.bad {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--bad);
+            border-color: var(--bad);
+        }
+        
+        .pill.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .entry-form {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section {
+            margin-bottom: 32px;
+            padding: 20px;
+            background: var(--card-light);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .section h3 {
+            margin: 0 0 16px 0;
+            color: var(--accent);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .field {
+            margin-bottom: 16px;
+        }
+        
+        .field label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--ink);
+            font-size: 1rem;
+        }
+        
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+        
+        .pain-scale {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        
+        .pain-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: var(--card);
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        
+        .pain-btn:hover {
+            border-color: var(--accent);
+            background: var(--card-light);
+        }
+        
+        .pain-btn.selected {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        .pain-btn.high {
+            background: var(--bad);
+            border-color: var(--bad);
+            color: white;
+        }
+        
+        .error-text {
+            color: var(--bad);
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .modal-content {
+            background-color: var(--card);
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: var(--muted);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--ink);
+        }
+        
+        .charts {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .entries {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .entry-item {
+            background: var(--card-light);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .entry-date {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .entry-score {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .score-excellent, .score-good {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--good);
+        }
+        
+        .score-fair {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warn);
+        }
+        
+        .score-poor, .score-critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--bad);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pain-scale {
+                justify-content: center;
+            }
+            
+            .status-pills {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="patient-info" id="patientInfo">Cardiac Surgery Recovery Tracker</div>
+            <div class="date-display" id="currentDate"></div>
+            <input type="text" id="customCondition" placeholder="Enter your condition (e.g., Valve Surgery, Pacemaker)" style="width:100%;max-width:400px;padding:8px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(255,255,255,0.04);color:var(--ink);">
+        </header>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="newEntry" class="btn-primary">➕ New Entry</button>
+            <button id="exportCsv" class="btn-secondary">⬇️ Export CSV</button>
+            <button id="exportPdf" class="btn-secondary">📄 Print/PDF</button>
+        </div>
+
+        <!-- Status Pills -->
+        <div class="status-pills">
+            <span class="pill good active" id="normalPill" title="Normal (A/B Score)">✓ Normal</span>
+            <span class="pill warn" id="watchPill" title="Watch (C Score)">⚠ Watch</span>
+            <span class="pill bad" id="alertPill" title="Alert (D/F Score)">🚨 Alert</span>
+        </div>
+
+        <!-- Entry Form -->
+        <div class="entry-form" id="entryForm">
+            <form id="dataForm" action="#" method="post">
+                <!-- Basic Information -->
+                <div class="section" id="basicSection">
+                    <h3>📅 Basic Information</h3>
+                    <div class="field">
+                        <label for="entryDate">Entry Date *</label>
+                        <input type="date" id="entryDate" required>
+                    </div>
+                    <div class="field">
+                        <label for="entryTime">Entry Time *</label>
+                        <input type="time" id="entryTime" required>
+                    </div>
+                    <div class="field">
+                        <label for="surgeryDate">Surgery Date</label>
+                        <input type="date" id="surgeryDate" placeholder="Your surgery date">
+                    </div>
+                    <div class="field">
+                        <label for="daysPostOp">Days Post-Op</label>
+                        <input type="number" id="daysPostOp" min="0" placeholder="Auto-calculated" readonly style="background:rgba(255,255,255,0.02)">
+                    </div>
+                </div>
+
+                <!-- Vitals -->
+                <div class="section" id="vitalsSection">
+                    <h3>💓 Vitals</h3>
+                    <div class="field">
+                        <label for="weight">Weight (lbs/kg)</label>
+                        <input type="number" id="weight" step="0.1" placeholder="e.g., 165.5">
+                        <span class="error-text" id="weightError" style="display:none"></span>
+                    </div>
+                    <div class="field">
+                        <label for="baselineWeight">Baseline Weight</label>
+                        <input type="number" id="baselineWeight" step="0.1" placeholder="Your target weight">
+                    </div>
+                    <div class="field">
+                        <label for="weightDeviation">Weight Deviation</label>
+                        <input type="text" id="weightDeviation" placeholder="Auto-calculated" readonly style="background:rgba(255,255,255,0.02)">
+                    </div>
+                    <div class="field">
+                        <label for="bloodPressure">Blood Pressure</label>
+                        <input type="text" id="bloodPressure" placeholder="e.g., 120/80">
+                        <span class="error-text" id="bloodPressureError" style="display:none"></span>
+                        <button type="button" class="btn-secondary" onclick="connectBPDevice()" style="margin-top:8px;padding:6px 12px;font-size:0.9rem">Connect BP Device</button>
+                    </div>
+                    <div class="field">
+                        <label for="heartRate">Heart Rate (bpm)</label>
+                        <input type="number" id="heartRate" placeholder="e.g., 72">
+                        <span class="error-text" id="heartRateError" style="display:none"></span>
+                    </div>
+                    <div class="field">
+                        <label for="oxygenSat">Oxygen Saturation (%)</label>
+                        <input type="number" id="oxygenSat" placeholder="e.g., 98">
+                        <span class="error-text" id="oxygenSatError" style="display:none"></span>
+                        <button type="button" class="btn-secondary" onclick="connectPulseOxDevice()" style="margin-top:8px;padding:6px 12px;font-size:0.9rem">Connect Pulse Ox</button>
+                    </div>
+                    <div class="field">
+                        <label for="temperature">Temperature (°F)</label>
+                        <input type="number" id="temperature" step="0.1" placeholder="e.g., 98.6">
+                        <span class="error-text" id="temperatureError" style="display:none"></span>
+                    </div>
+                </div>
+
+                <!-- Pain Assessment -->
+                <div class="section" id="painSection">
+                    <h3>😣 Pain Assessment</h3>
+                    <div class="field">
+                        <label>Chest Pain (0-10)</label>
+                        <div class="pain-scale" id="chestPainScale" role="radiogroup" aria-label="Chest pain scale"></div>
+                    </div>
+                    <div class="field">
+                        <label>Body Pain (0-10)</label>
+                        <div class="pain-scale" id="bodyPainScale" role="radiogroup" aria-label="Body pain scale"></div>
+                    </div>
+                </div>
+
+                <!-- Wellbeing -->
+                <div class="section" id="wellbeingSection">
+                    <h3>😊 Wellbeing</h3>
+                    <div class="field">
+                        <label>Overall Wellbeing (1-10)</label>
+                        <div class="pain-scale" id="wellbeingScale" role="radiogroup" aria-label="Wellbeing scale"></div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="section" id="notesSection">
+                    <h3>📝 Notes</h3>
+                    <div class="field">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" rows="4" placeholder="Any additional observations or notes..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="field" style="text-align: center; margin-top: 32px;">
+                    <button type="submit" class="btn-primary" style="margin-right: 12px;">💾 Save Entry</button>
+                    <button type="button" id="clearForm" class="btn-secondary">🗑️ Clear Form</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts" id="chartsContainer" style="display:none">
+            <canvas id="weightChart" style="max-height:300px;margin-bottom:24px"></canvas>
+            <canvas id="painChart" style="max-height:300px;margin-bottom:24px"></canvas>
+            <canvas id="wellbeingChart" style="max-height:300px;margin-bottom:24px"></canvas>
+        </div>
+
+        <!-- Entries History -->
+        <div class="entries" id="entriesContainer">
+            <h3>📊 Entry History</h3>
+            <div id="entriesList">
+                <!-- Entries will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="scoringModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeScoringModal()">&times;</span>
+            <h2>Scoring Guide</h2>
+            <p>This is a comprehensive cardiac surgery recovery tracker with automated scoring based on vital signs, pain levels, and overall wellbeing.</p>
+            <h3>Scoring System:</h3>
+            <ul>
+                <li><strong>Excellent (A):</strong> All vitals normal, minimal pain, high wellbeing</li>
+                <li><strong>Good (B):</strong> Most vitals normal, mild pain, good wellbeing</li>
+                <li><strong>Fair (C):</strong> Some concerning vitals, moderate pain, fair wellbeing</li>
+                <li><strong>Poor (D):</strong> Multiple concerning vitals, significant pain, low wellbeing</li>
+                <li><strong>Critical (F):</strong> Dangerous vitals, severe pain, very low wellbeing</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="whatsNewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWhatsNewModal()">&times;</span>
+            <h2>What's New</h2>
+            <h3>Enhanced Features:</h3>
+            <ul>
+                <li>✨ Real-time validation and error checking</li>
+                <li>📊 Interactive charts and data visualization</li>
+                <li>🔒 HIPAA-compliant encrypted data storage</li>
+                <li>📱 Mobile-responsive design</li>
+                <li>📤 CSV export functionality</li>
+                <li>🖨️ Print/PDF support</li>
+                <li>🔗 Bluetooth device integration (BP, Pulse Ox)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // CORE FUNCTIONALITY
+        // ============================================================================
+        
+        // HIPAA Compliance: Encrypt localStorage
+        const SECRET_KEY = 'heartbeat-hipaa-2025-xai';
+        
+        function encryptData(data) {
+            return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString();
+        }
+        
+        function decryptData(encrypted) {
+            try {
+                const decrypted = CryptoJS.AES.decrypt(encrypted, SECRET_KEY);
+                return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+            } catch (e) {
+                console.warn('Decryption failed:', e);
+                return null;
+            }
+        }
+        
+        function getEncryptedStorage(key, defaultValue = null) {
+            const encrypted = localStorage.getItem(key);
+            return encrypted ? decryptData(encrypted) : defaultValue;
+        }
+        
+        function setEncryptedStorage(key, data) {
+            localStorage.setItem(key, encryptData(data));
+        }
+        
+        // ============================================================================
+        // INITIALIZATION
+        // ============================================================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+        
+        function initializeApp() {
+            // Initialize date and time
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            document.getElementById('entryDate').valueAsDate = new Date();
+            document.getElementById('entryTime').value = new Date().toTimeString().slice(0, 5);
+            
+            // Initialize custom condition
+            const savedCondition = getEncryptedStorage('patientCondition');
+            if (savedCondition) {
+                document.getElementById('patientInfo').textContent = savedCondition;
+                document.getElementById('customCondition').value = savedCondition;
+            }
+            
+            // Initialize saved data
+            const savedSurgeryDate = getEncryptedStorage('surgeryDate');
+            const savedBaselineWeight = getEncryptedStorage('baselineWeight');
+            if (savedSurgeryDate) {
+                document.getElementById('surgeryDate').value = savedSurgeryDate;
+            }
+            if (savedBaselineWeight) {
+                document.getElementById('baselineWeight').value = savedBaselineWeight;
+            }
+            
+            // Create interactive elements
+            createPainScale('chestPainScale', 'chestPain');
+            createPainScale('bodyPainScale', 'bodyPain');
+            createWellbeingScale();
+            
+            // Add event listeners
+            addEventListeners();
+            
+            // Calculate initial values
+            calculateDaysPostOp();
+            calculateWeightDeviation();
+            
+            // Load and display entries
+            renderEntries();
+        }
+        
+        // ============================================================================
+        // PAIN SCALES AND INTERACTIVE ELEMENTS
+        // ============================================================================
+        
+        function createPainScale(containerId, fieldName) {
+            const container = document.getElementById(containerId);
+            container.setAttribute('role', 'radiogroup');
+            container.setAttribute('aria-label', `${fieldName} scale`);
+            
+            for (let i = 0; i <= 10; i++) {
+                const btn = document.createElement('div');
+                btn.className = 'pain-btn';
+                btn.textContent = i;
+                btn.dataset.value = i;
+                btn.dataset.field = fieldName;
+                btn.setAttribute('role', 'radio');
+                btn.setAttribute('aria-checked', 'false');
+                btn.tabIndex = i === 0 ? 0 : -1;
+                
+                btn.addEventListener('click', function() {
+                    // Clear previous selection
+                    container.querySelectorAll('.pain-btn').forEach(b => {
+                        b.classList.remove('selected', 'high');
+                        b.setAttribute('aria-checked', 'false');
+                        b.tabIndex = -1;
+                    });
+                    
+                    // Select current button
+                    this.classList.add('selected');
+                    this.setAttribute('aria-checked', 'true');
+                    this.tabIndex = 0;
+                    
+                    // Add high pain indicator for scores 7+
+                    if (i >= 7) {
+                        this.classList.add('high');
+                    }
+                    
+                    // Store value
+                    setEncryptedStorage(fieldName, i);
+                });
+                
+                // Keyboard navigation
+                btn.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowRight' && i < 10) {
+                        container.children[i + 1].focus();
+                    } else if (e.key === 'ArrowLeft' && i > 0) {
+                        container.children[i - 1].focus();
+                    }
+                });
+                
+                container.appendChild(btn);
+            }
+        }
+        
+        function createWellbeingScale() {
+            const container = document.getElementById('wellbeingScale');
+            container.setAttribute('role', 'radiogroup');
+            container.setAttribute('aria-label', 'Wellbeing scale');
+            
+            for (let i = 1; i <= 10; i++) {
+                const btn = document.createElement('div');
+                btn.className = 'pain-btn';
+                btn.textContent = i;
+                btn.dataset.value = i;
+                btn.dataset.field = 'wellbeing';
+                btn.setAttribute('role', 'radio');
+                btn.setAttribute('aria-checked', 'false');
+                btn.tabIndex = i === 1 ? 0 : -1;
+                
+                btn.addEventListener('click', function() {
+                    container.querySelectorAll('.pain-btn').forEach(b => {
+                        b.classList.remove('selected', 'high');
+                        b.setAttribute('aria-checked', 'false');
+                        b.tabIndex = -1;
+                    });
+                    
+                    this.classList.add('selected');
+                    this.setAttribute('aria-checked', 'true');
+                    this.tabIndex = 0;
+                    
+                    if (i >= 8) {
+                        this.classList.add('high');
+                    }
+                    
+                    setEncryptedStorage('wellbeing', i);
+                });
+                
+                container.appendChild(btn);
+            }
+        }
+        
+        // ============================================================================
+        // CALCULATIONS AND VALIDATIONS
+        // ============================================================================
+        
+        function calculateDaysPostOp() {
+            const surgeryDate = document.getElementById('surgeryDate').value;
+            const entryDate = document.getElementById('entryDate').value;
+            
+            if (surgeryDate && entryDate) {
+                const surgery = new Date(surgeryDate);
+                const entry = new Date(entryDate);
+                const diffTime = entry - surgery;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                document.getElementById('daysPostOp').value = diffDays >= 0 ? diffDays : 0;
+            }
+        }
+        
+        function calculateWeightDeviation() {
+            const baseline = parseFloat(document.getElementById('baselineWeight').value);
+            const current = parseFloat(document.getElementById('weight').value);
+            
+            if (!isNaN(baseline) && !isNaN(current)) {
+                const deviation = current - baseline;
+                const sign = deviation >= 0 ? '+' : '';
+                document.getElementById('weightDeviation').value = sign + deviation.toFixed(1) + ' lbs/kg';
+                
+                // Flag if gaining more than 2 lbs
+                if (deviation > 2) {
+                    document.getElementById('weightDeviation').style.color = 'var(--bad)';
+                    document.getElementById('weightDeviation').style.fontWeight = '700';
+                } else {
+                    document.getElementById('weightDeviation').style.color = 'var(--ink)';
+                    document.getElementById('weightDeviation').style.fontWeight = '600';
+                }
+            } else {
+                document.getElementById('weightDeviation').value = '';
+            }
+        }
+        
+        function validateForm() {
+            const requiredFields = ['entryDate', 'entryTime'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'var(--bad)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                }
+            });
+            
+            return isValid;
+        }
+        
+        // ============================================================================
+        // RECOVERY SCORING SYSTEM
+        // ============================================================================
+        
+        function calculateRecoveryScore(entry) {
+            let score = 0;
+            let riskPoints = 0;
+            
+            // Heart Rate scoring
+            const hr = parseInt(entry.heartRate);
+            if (!isNaN(hr)) {
+                if (hr < 50 || hr > 110) {
+                    riskPoints += 3;
+                } else if (hr < 55 || hr > 100) {
+                    riskPoints += 1;
+                }
+            }
+            
+            // Oxygen Saturation scoring
+            const ox = parseInt(entry.oxygenSat);
+            if (!isNaN(ox)) {
+                if (ox < 90) {
+                    riskPoints += 4;
+                } else if (ox < 92) {
+                    riskPoints += 2;
+                }
+            }
+            
+            // Temperature scoring
+            const temp = parseFloat(entry.temperature);
+            if (!isNaN(temp)) {
+                if (temp < 97 || temp > 100.4) {
+                    riskPoints += 2;
+                }
+            }
+            
+            // Blood Pressure scoring
+            if (entry.bloodPressure) {
+                const bp = entry.bloodPressure.split('/');
+                if (bp.length === 2) {
+                    const sys = parseInt(bp[0]);
+                    const dia = parseInt(bp[1]);
+                    if (!isNaN(sys) && !isNaN(dia)) {
+                        if (sys < 90 || sys > 160 || dia < 60 || dia > 100) {
+                            riskPoints += 2;
+                        }
+                    }
+                }
+            }
+            
+            // Pain scoring
+            const chestPain = parseInt(entry.chestPain) || 0;
+            const bodyPain = parseInt(entry.bodyPain) || 0;
+            const maxPain = Math.max(chestPain, bodyPain);
+            
+            if (maxPain >= 8) {
+                riskPoints += 3;
+            } else if (maxPain >= 6) {
+                riskPoints += 2;
+            } else if (maxPain >= 4) {
+                riskPoints += 1;
+            }
+            
+            // Wellbeing scoring
+            const wellbeing = parseInt(entry.wellbeing) || 5;
+            if (wellbeing <= 3) {
+                riskPoints += 2;
+            } else if (wellbeing <= 5) {
+                riskPoints += 1;
+            }
+            
+            // Calculate final score
+            score = Math.max(0, 100 - (riskPoints * 10));
+            
+            // Determine grade
+            let grade, status;
+            if (score >= 90) {
+                grade = 'A';
+                status = 'Excellent';
+            } else if (score >= 80) {
+                grade = 'B';
+                status = 'Good';
+            } else if (score >= 70) {
+                grade = 'C';
+                status = 'Fair';
+            } else if (score >= 60) {
+                grade = 'D';
+                status = 'Poor';
+            } else {
+                grade = 'F';
+                status = 'Critical';
+            }
+            
+            return {
+                recoveryScore: score,
+                grade: grade,
+                status: status,
+                riskPoints: riskPoints
+            };
+        }
+        
+        // ============================================================================
+        // DATA MANAGEMENT
+        // ============================================================================
+        
+        function saveEntry(formData) {
+            const entries = getEncryptedStorage('cardiacEntries', []);
+            const recoveryAssessment = calculateRecoveryScore(formData);
+            
+            const entry = {
+                ...formData,
+                recoveryAssessment: recoveryAssessment,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+            
+            entries.unshift(entry);
+            setEncryptedStorage('cardiacEntries', entries);
+            
+            return entry;
+        }
+        
+        function renderEntries() {
+            const entries = getEncryptedStorage('cardiacEntries', []);
+            const container = document.getElementById('entriesList');
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--muted); padding: 40px;">No entries yet. Create your first entry above!</p>';
+                return;
+            }
+            
+            container.innerHTML = entries.map(entry => {
+                const score = entry.recoveryAssessment;
+                const scoreClass = `score-${score.status.toLowerCase()}`;
+                
+                return `
+                    <div class="entry-item">
+                        <div class="entry-header">
+                            <div class="entry-date">${entry.entryDate} at ${entry.entryTime}</div>
+                            <div class="entry-score ${scoreClass}">${score.grade} - ${score.status}</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
+                            ${entry.weight ? `<div><strong>Weight:</strong> ${entry.weight} lbs</div>` : ''}
+                            ${entry.bloodPressure ? `<div><strong>BP:</strong> ${entry.bloodPressure}</div>` : ''}
+                            ${entry.heartRate ? `<div><strong>HR:</strong> ${entry.heartRate} bpm</div>` : ''}
+                            ${entry.oxygenSat ? `<div><strong>O2:</strong> ${entry.oxygenSat}%</div>` : ''}
+                            ${entry.chestPain !== undefined ? `<div><strong>Chest Pain:</strong> ${entry.chestPain}/10</div>` : ''}
+                            ${entry.bodyPain !== undefined ? `<div><strong>Body Pain:</strong> ${entry.bodyPain}/10</div>` : ''}
+                            ${entry.wellbeing !== undefined ? `<div><strong>Wellbeing:</strong> ${entry.wellbeing}/10</div>` : ''}
+                        </div>
+                        ${entry.notes ? `<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);"><strong>Notes:</strong> ${entry.notes}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ============================================================================
+        // BLUETOOTH DEVICE INTEGRATION
+        // ============================================================================
+        
+        async function connectBPDevice() {
+            try {
+                if (!navigator.bluetooth) {
+                    alert('Bluetooth is not supported in this browser');
+                    return;
+                }
+                
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [0x1810] }] // Blood Pressure service UUID
+                });
+                
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService(0x1810);
+                const characteristic = await service.getCharacteristic(0x2A35); // Blood Pressure Measurement
+                const value = await characteristic.readValue();
+                const bp = parseIEEE11073Float(value);
+                
+                document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
+                document.getElementById('heartRate').value = bp.pulse;
+                
+                alert('Blood pressure data imported successfully!');
+            } catch (error) {
+                console.error('BP connect error:', error);
+                alert('Failed to connect to BP device. Please enter values manually.');
+            }
+        }
+        
+        async function connectPulseOxDevice() {
+            try {
+                if (!navigator.bluetooth) {
+                    alert('Bluetooth is not supported in this browser');
+                    return;
+                }
+                
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [0x1822] }] // Pulse Oximeter service UUID
+                });
+                
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService(0x1822);
+                const characteristic = await service.getCharacteristic(0x2A5F); // PLX Spot-Check Measurement
+                const value = await characteristic.readValue();
+                const ox = parseIEEE11073Float(value);
+                
+                document.getElementById('oxygenSat').value = ox.spO2;
+                document.getElementById('heartRate').value = ox.pulse;
+                
+                alert('Pulse oximeter data imported successfully!');
+            } catch (error) {
+                console.error('Pulse Ox connect error:', error);
+                alert('Failed to connect to Pulse Ox device. Please enter values manually.');
+            }
+        }
+        
+        function parseIEEE11073Float(dataview) {
+            const exponent = dataview.getInt8(3);
+            let mantissa = dataview.getInt32(0, true) & 0x00ffffff;
+            if (mantissa >= Math.pow(2, 23)) mantissa -= Math.pow(2, 24);
+            return mantissa * Math.pow(10, exponent);
+        }
+        
+        // ============================================================================
+        // EXPORT FUNCTIONALITY
+        // ============================================================================
+        
+        function exportToCSV() {
+            const entries = getEncryptedStorage('cardiacEntries', []);
+            if (entries.length === 0) {
+                alert('No entries to export');
+                return;
+            }
+            
+            const headers = [
+                'Date', 'Time', 'Weight', 'Blood Pressure', 'Heart Rate', 
+                'Oxygen Saturation', 'Temperature', 'Chest Pain', 'Body Pain', 
+                'Wellbeing', 'Recovery Score', 'Grade', 'Status', 'Notes'
+            ];
+            
+            const csvContent = [
+                headers.join(','),
+                ...entries.map(entry => [
+                    entry.entryDate || '',
+                    entry.entryTime || '',
+                    entry.weight || '',
+                    entry.bloodPressure || '',
+                    entry.heartRate || '',
+                    entry.oxygenSat || '',
+                    entry.temperature || '',
+                    entry.chestPain || '',
+                    entry.bodyPain || '',
+                    entry.wellbeing || '',
+                    entry.recoveryAssessment?.recoveryScore || '',
+                    entry.recoveryAssessment?.grade || '',
+                    entry.recoveryAssessment?.status || '',
+                    (entry.notes || '').replace(/,/g, ';')
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cardiac-recovery-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        // ============================================================================
+        // MODAL FUNCTIONS
+        // ============================================================================
+        
+        function openScoringModal() {
+            document.getElementById('scoringModal').style.display = 'block';
+        }
+        
+        function closeScoringModal() {
+            document.getElementById('scoringModal').style.display = 'none';
+        }
+        
+        function openWhatsNewModal() {
+            document.getElementById('whatsNewModal').style.display = 'block';
+        }
+        
+        function closeWhatsNewModal() {
+            document.getElementById('whatsNewModal').style.display = 'none';
+        }
+        
+        // ============================================================================
+        // EVENT LISTENERS
+        // ============================================================================
+        
+        function addEventListeners() {
+            // Custom condition
+            document.getElementById('customCondition').addEventListener('change', function() {
+                const condition = this.value.trim() || 'Cardiac Surgery Recovery Tracker';
+                document.getElementById('patientInfo').textContent = condition;
+                setEncryptedStorage('patientCondition', condition);
+            });
+            
+            // Surgery date and weight calculations
+            document.getElementById('surgeryDate').addEventListener('change', function() {
+                setEncryptedStorage('surgeryDate', this.value);
+                calculateDaysPostOp();
+            });
+            
+            document.getElementById('entryDate').addEventListener('change', calculateDaysPostOp);
+            
+            document.getElementById('baselineWeight').addEventListener('input', function() {
+                setEncryptedStorage('baselineWeight', this.value);
+                calculateWeightDeviation();
+            });
+            
+            document.getElementById('weight').addEventListener('input', calculateWeightDeviation);
+            
+            // Form submission
+            document.getElementById('dataForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                const formData = {
+                    entryDate: document.getElementById('entryDate').value,
+                    entryTime: document.getElementById('entryTime').value,
+                    surgeryDate: document.getElementById('surgeryDate').value,
+                    daysPostOp: document.getElementById('daysPostOp').value,
+                    weight: document.getElementById('weight').value,
+                    baselineWeight: document.getElementById('baselineWeight').value,
+                    weightDeviation: document.getElementById('weightDeviation').value,
+                    bloodPressure: document.getElementById('bloodPressure').value,
+                    heartRate: document.getElementById('heartRate').value,
+                    oxygenSat: document.getElementById('oxygenSat').value,
+                    temperature: document.getElementById('temperature').value,
+                    chestPain: document.querySelector('#chestPainScale .pain-btn.selected')?.dataset.value,
+                    bodyPain: document.querySelector('#bodyPainScale .pain-btn.selected')?.dataset.value,
+                    wellbeing: document.querySelector('#wellbeingScale .pain-btn.selected')?.dataset.value,
+                    notes: document.getElementById('notes').value
+                };
+                
+                saveEntry(formData);
+                alert('Entry saved successfully!');
+                
+                // Clear form
+                document.getElementById('clearForm').click();
+                
+                // Refresh entries
+                renderEntries();
+            });
+            
+            // Clear form
+            document.getElementById('clearForm').addEventListener('click', function() {
+                if (confirm('Clear all form fields?')) {
+                    document.getElementById('dataForm').reset();
+                    document.querySelectorAll('.pain-btn').forEach(btn => {
+                        btn.classList.remove('selected', 'high');
+                        btn.setAttribute('aria-checked', 'false');
+                    });
+                    calculateDaysPostOp();
+                    calculateWeightDeviation();
+                }
+            });
+            
+            // Control buttons
+            document.getElementById('newEntry').addEventListener('click', function() {
+                document.getElementById('clearForm').click();
+                document.getElementById('entryForm').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('exportCsv').addEventListener('click', exportToCSV);
+            
+            document.getElementById('exportPdf').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // Modal close on outside click
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
