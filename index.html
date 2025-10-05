@@ -4754,15 +4754,18 @@
             // Add more for other labs
             const labsRisk = riskPoints - vitalsRisk - rhythmRisk - painRisk - symptomsRisk;
             // ACTIVITY (weights.activity points)
+            const adlScores = entry.adlScores || {};
             let adlAvg = 0;
             let adlCount = 0;
-            for (let key in entry.adlScores) {
-                adlAvg += parseInt(entry.adlScores[key]);
+            for (let key in adlScores) {
+                adlAvg += parseInt(adlScores[key]);
                 adlCount++;
             }
-            adlAvg = adlAvg / adlCount;
-            if (adlAvg < 5) riskPoints += weights.activity * 0.4;
-            else if (adlAvg < 7) riskPoints += weights.activity * 0.2;
+            if (adlCount > 0) {
+                adlAvg = adlAvg / adlCount;
+                if (adlAvg < 5) riskPoints += weights.activity * 0.4;
+                else if (adlAvg < 7) riskPoints += weights.activity * 0.2;
+            }
             const activityRisk = riskPoints - vitalsRisk - rhythmRisk - painRisk - symptomsRisk - labsRisk;
             // PHQ-9 (weights.phq points)
             if (entry.phq9Score >= 20) riskPoints += weights.phq * 1.0;
@@ -4915,20 +4918,7 @@
                 setEncryptedStorage('formDraft', {});
             }
         });
-        // Validate required fields
-        const requiredFields = ['entryDate', 'entryTime'];
-        let isValid = true;
-        requiredFields.forEach(id => {
-            const field = document.getElementById(id);
-            if (!field.value) {
-                field.style.borderColor = 'var(--bad)';
-                isValid = false;
-            }
-        });
-        if (!isValid) {
-            alert('Please fill in all required fields (Date, Time).');
-            return;
-        }
+        // Initial required field validation removed (handled on submit)
         // Tab navigation with unlock
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -5136,8 +5126,7 @@
             // Update analytics
             updateAnalytics(filteredEntries);
         }
-        // Local storage for entries (encrypted)
-        let entries = getEncryptedStorage('cardiacEntries', []);
+        // Duplicate declaration removed to avoid shadowing
         // Form submission with validation, toast, pinned, etc.
         document.getElementById('dataForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -5371,9 +5360,10 @@
                 .catch(error => console.error('Sync error:', error));
             logAudit('save-entry', { score: recoveryAssessment.recoveryScore });
             // Update legend and why-status
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            const pillMap = { excellent: 'normalPill', good: 'normalPill', fair: 'watchPill', poor: 'alertPill', critical: 'alertPill' };
-            document.getElementById(pillMap[recoveryAssessment.className]).classList.add('active');
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        const pillMap = { excellent: 'normalPill', good: 'normalPill', fair: 'watchPill', poor: 'alertPill', critical: 'alertPill' };
+        document.getElementById(pillMap[recoveryAssessment.className]).classList.add('active');
+            const weights = physicianUnlocked ? customWeights : defaultWeights;
             let breakdown = '';
             for (let [k, v] of Object.entries(recoveryAssessment.subScores)) {
                 breakdown += `${k}: ${v}/${weights[k]}<br>`;
@@ -5417,7 +5407,7 @@
                 document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
                 document.getElementById('heartRate').value = bp.pulse;
             } catch (error) {
-                console.error('BP connect error:', e);
+                console.error('BP connect error:', error);
                 alert('Failed to connect to BP device.');
             }
         }
@@ -5532,358 +5522,7 @@
                 event.target.style.display = 'none';
             }
         }
-        // Form submission with validation, toast, pinned, etc.
-        document.getElementById('dataForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            // Validate required fields
-            const requiredFields = ['entryDate', 'entryTime'];
-            let isValid = true;
-            requiredFields.forEach(id => {
-                const field = document.getElementById(id);
-                if (!field.value) {
-                    field.style.borderColor = 'var(--bad)';
-                    isValid = false;
-                }
-            });
-            if (!isValid) {
-                alert('Please fill in all required fields (Date, Time).');
-                return;
-            }
-            // Collect data
-            const formData = {
-                date: document.getElementById('entryDate').value,
-                time: document.getElementById('entryTime').value,
-                originalSymptoms: Array.from(document.querySelectorAll('#originalSymptomsGroup input:checked')).map(cb => cb.value),
-                procedures: Array.from(document.getElementById('procedures').selectedOptions).map(opt => opt.value),
-                hospitalStay: document.getElementById('hospitalStay').value,
-                hospitalComplications: document.getElementById('hospitalComplications').value,
-                weight: document.getElementById('weight').value,
-                bloodPressure: document.getElementById('bloodPressure').value,
-                heartRate: document.getElementById('heartRate').value,
-                oxygenSat: document.getElementById('oxygenSat').value,
-                temperature: document.getElementById('temperature').value,
-                respRate: document.getElementById('respRate').value,
-                rhythm: document.getElementById('rhythm').value,
-                palpitations: document.getElementById('palpitations').value,
-                pacemakerIssues: document.getElementById('pacemakerIssues').value,
-                chestPain: document.querySelector('#chestPainScale .selected')?.dataset.value,
-                bodyPain: document.querySelector('#bodyPainScale .selected')?.dataset.value,
-                chestPainTrend: document.getElementById('chestPainTrend').value,
-                bodyPainTrend: document.getElementById('bodyPainTrend').value,
-                painLocation: document.getElementById('painLocation').value,
-                painType: document.getElementById('painType').value,
-                incisionStatus: document.getElementById('incisionStatus').value,
-                painPosition: document.getElementById('painPosition').value,
-                painTrigger: document.getElementById('painTrigger').value,
-                painActivity: document.getElementById('painActivity').value,
-                drainageAmount: document.getElementById('drainageAmount').value,
-                drainageColor: document.getElementById('drainageColor').value,
-                woundWarmth: document.getElementById('woundWarmth').value,
-                rednessExtent: document.getElementById('rednessExtent').value,
-                woundEdges: document.getElementById('woundEdges').value,
-                surroundingSkin: document.getElementById('surroundingSkin').value,
-                woundPhotos: window.woundPhotosData || [],
-                shortnessOfBreath: document.getElementById('shortnessOfBreath').value,
-                fatigue: document.getElementById('fatigue').value,
-                dizziness: document.getElementById('dizziness').value,
-                swelling: document.getElementById('swelling').value,
-                nausea: document.getElementById('nausea').value,
-                sleepHours: document.getElementById('sleepHours').value,
-                sleepPosition: document.getElementById('sleepPosition').value,
-                wakingSOB: document.getElementById('wakingSOB').value,
-                cough: document.getElementById('cough').value,
-                mood: document.getElementById('mood').value,
-                sternumClicking: document.getElementById('sternumClicking').value,
-                bowelMovement: document.getElementById('bowelMovement').value,
-                stoolConsistency: document.getElementById('stoolConsistency').value,
-                bmStraining: document.getElementById('bmStraining').value,
-                complicationSymptoms: Array.from(document.querySelectorAll('input[name="pericardiotomy"]:checked, input[name="pleural"]:checked, input[name="pericardial"]:checked, input[name="tamponade"]:checked')).map(cb => cb.value),
-                liftingCompliance: document.getElementById('liftingCompliance').value,
-                pushPullCompliance: document.getElementById('pushPullCompliance').value,
-                armMovement: document.getElementById('armMovement').value,
-                drivingStatus: document.getElementById('drivingStatus').value,
-                coughSplinting: document.getElementById('coughSplinting').value,
-                sternumShift: document.getElementById('sternumShift').value,
-                adlScores: {},
-                fluidRestriction: document.getElementById('fluidRestriction').value,
-                fluidIntake: document.getElementById('fluidIntake').value,
-                urineOutput: document.getElementById('urineOutput').value,
-                urineColor: document.getElementById('urineColor').value,
-                diuretic: document.getElementById('diuretic').value,
-                diureticFreq: document.getElementById('diureticFreq').value,
-                anticoagType: document.getElementById('anticoagType').value,
-                anticoagDose: document.getElementById('anticoagDose').value,
-                anticoagulantFreq: document.getElementById('anticoagulantFreq').value,
-                betaBlocker: document.getElementById('betaBlocker').value,
-                betaBlockerFreq: document.getElementById('betaBlockerFreq').value,
-                antiarrhythmic: document.getElementById('antiarrhythmic').value,
-                antiarrhythmicFreq: document.getElementById('antiarrhythmicFreq').value,
-                aceInhibitor: document.getElementById('aceInhibitor').value,
-                aceInhibitorFreq: document.getElementById('aceInhibitorFreq').value,
-                painMed: document.getElementById('painMed').value,
-                painMedFreq: document.getElementById('painMedFreq').value,
-                potassium: document.getElementById('potassium').value,
-                potassiumFreq: document.getElementById('potassiumFreq').value,
-                otherCardiacMeds: document.getElementById('otherCardiacMeds').value,
-                otherCardiacMedsFreq: document.getElementById('otherCardiacMedsFreq').value,
-                missedDoseReasons: document.getElementById('missedDoseReasons').value,
-                sideEffects: {},
-                onWarfarin: document.getElementById('onWarfarin').value,
-                vitaminKConsistency: document.getElementById('vitaminKConsistency').value,
-                vitaminKFoods: Array.from(document.querySelectorAll('input[name="vitaminK"]:checked')).map(cb => cb.value),
-                vitaminKServings: document.getElementById('vitaminKServings').value,
-                vitaminKSupplement: document.getElementById('vitaminKSupplement').value,
-                vitaminKNotes: document.getElementById('vitaminKNotes').value,
-                walkingSessions: Array.from(document.querySelectorAll('#walkingSessionsContainer input')).map(inp => inp.value),
-                steps: document.getElementById('steps').value,
-                cardiacRehab: document.getElementById('cardiacRehab').value,
-                activityTolerance: document.getElementById('activityTolerance').value,
-                stairs: document.getElementById('stairs').value,
-                exerciseSOB: document.getElementById('exerciseSOB').value,
-                walkTargetDistance: document.getElementById('walkTargetDistance').value,
-                walkActualDistance: document.getElementById('walkActualDistance').value,
-                exerciseTargetDuration: document.getElementById('exerciseTargetDuration').value,
-                exerciseActualDuration: document.getElementById('exerciseActualDuration').value,
-                exerciseTargetHR: document.getElementById('exerciseTargetHR').value,
-                exerciseActualHR: document.getElementById('exerciseActualHR').value,
-                exerciseMaxHR: document.getElementById('exerciseMaxHR').value,
-                exercisePeakHR: document.getElementById('exercisePeakHR').value,
-                exerciseNotes: document.getElementById('exerciseNotes').value,
-                nextRehabDate: document.getElementById('nextRehabDate').value,
-                rehabFrequency: document.getElementById('rehabFrequency').value,
-                therapistNotes: document.getElementById('therapistNotes').value,
-                cycleStatus: document.getElementById('cycleStatus').value,
-                cycleDay: document.getElementById('cycleDay').value,
-                daysRelativeToPeriod: document.getElementById('daysRelativeToPeriod').value,
-                flowHeaviness: document.getElementById('flowHeaviness').value,
-                hormonalSymptoms: document.getElementById('hormonalSymptoms').value,
-                wellbeingScore: document.querySelector('#wellbeingScale .selected')?.dataset.value,
-                wellbeingSummary: document.getElementById('wellbeingSummary').value,
-                phq9Score: parseInt(document.getElementById('phq9Score').textContent) || 0,
-                phq9Severity: document.getElementById('phq9Severity').textContent,
-                warningSymptoms: Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(cb => cb.value),
-                notes: document.getElementById('notes').value,
-                bpDeviceBrand: document.getElementById('bpDeviceBrand').value,
-                bpDeviceReading: document.getElementById('bpDeviceReading').value,
-                bpDevicePulse: document.getElementById('bpDevicePulse').value,
-                bpArm: document.getElementById('bpArm').value,
-                bpPosition: document.getElementById('bpPosition').value,
-                pulseOxBrand: document.getElementById('pulseOxBrand').value,
-                pulseOxReading: document.getElementById('pulseOxReading').value,
-                pulseOxHR: document.getElementById('pulseOxHR').value,
-                pulseOxFinger: document.getElementById('pulseOxFinger').value,
-                pulseOxQuality: document.getElementById('pulseOxQuality').value,
-                scaleBrand: document.getElementById('scaleBrand').value,
-                scaleReading: document.getElementById('scaleReading').value,
-                scaleTimimg: document.getElementById('scaleTimimg').value,
-                pacemakerSystem: document.getElementById('pacemakerSystem').value,
-                pacemakerTransmission: document.getElementById('pacemakerTransmission').value,
-                pacemakerAlerts: document.getElementById('pacemakerAlerts').value,
-                pacemakerAtrialPaced: document.getElementById('pacemakerAtrialPaced').value,
-                pacemakerVentricularPaced: document.getElementById('pacemakerVentricularPaced').value,
-                pacemakerBattery: document.getElementById('pacemakerBattery').value,
-                pacemakerAtrialImpedance: document.getElementById('pacemakerAtrialImpedance').value,
-                pacemakerVentricularImpedance: document.getElementById('pacemakerVentricularImpedance').value,
-                pacemakerData: document.getElementById('pacemakerData').value,
-                deviceNotes: document.getElementById('deviceNotes').value,
-                physAnticoagType: document.getElementById('physAnticoagType').value,
-                physAnticoagDose: document.getElementById('physAnticoagDose').value,
-                inrProvider: document.getElementById('inrProvider').value,
-                inrProviderName: document.getElementById('inrProviderName').value,
-                inrProviderPhone: document.getElementById('inrProviderPhone').value,
-                todayINR: document.getElementById('todayINR').value,
-                todayWarfarinDose: document.getElementById('todayWarfarinDose').value,
-                warfarinDoseChange: document.getElementById('warfarinDoseChange').value,
-                warfarinNewDoseInstructions: document.getElementById('warfarinNewDoseInstructions').value,
-                nextINRDate: document.getElementById('nextINRDate').value,
-                nextINRLocation: document.getElementById('nextINRLocation').value,
-                nextINRTime: document.getElementById('nextINRTime').value,
-                inrHistory: Array.from(document.querySelectorAll('#inrHistoryContainer .inr-history-item')).map(item => {
-                    const inputs = item.querySelectorAll('input');
-                    return { date: inputs[0].value, inr: inputs[1].value, dose: inputs[2].value };
-                }),
-                anticoagNotes: document.getElementById('anticoagNotes').value,
-                inr: document.getElementById('inr').value,
-                potassiumLevel: document.getElementById('potassiumLevel').value,
-                magnesiumLevel: document.getElementById('magnesiumLevel').value,
-                bnp: document.getElementById('bnp').value,
-                creatinine: document.getElementById('creatinine').value,
-                hemoglobin: document.getElementById('hemoglobin').value,
-                rbc: document.getElementById('rbc').value,
-                wbc: document.getElementById('wbc').value,
-                crp: document.getElementById('crp').value,
-                fibrinogen: document.getElementById('fibrinogen').value,
-                nextLabDate: document.getElementById('nextLabDate').value,
-                pcpName: document.getElementById('pcpName').value,
-                pcpPhone: document.getElementById('pcpPhone').value,
-                pcpLastContact: document.getElementById('pcpLastContact').value,
-                pcpNextAppt: document.getElementById('pcpNextAppt').value,
-                pcpInterval: document.getElementById('pcpInterval').value,
-                cardioName: document.getElementById('cardioName').value,
-                cardioPhone: document.getElementById('cardioPhone').value,
-                cardioLastContact: document.getElementById('cardioLastContact').value,
-                cardioNextAppt: document.getElementById('cardioNextAppt').value,
-                cardioInterval: document.getElementById('cardioInterval').value,
-                surgeonName: document.getElementById('surgeonName').value,
-                surgeonPhone: document.getElementById('surgeonPhone').value,
-                surgeonLastContact: document.getElementById('surgeonLastContact').value,
-                surgeonNextAppt: document.getElementById('surgeonNextAppt').value,
-                surgeonInterval: document.getElementById('surgeonInterval').value,
-                epName: document.getElementById('epName').value,
-                epPhone: document.getElementById('epPhone').value,
-                epLastContact: document.getElementById('epLastContact').value,
-                epNextAppt: document.getElementById('epNextAppt').value,
-                epInterval: document.getElementById('epInterval').value,
-                rehabName: document.getElementById('rehabName').value,
-                rehabPhone: document.getElementById('rehabPhone').value,
-                rehabLastSession: document.getElementById('rehabLastSession').value,
-                rehabSessionsPerWeek: document.getElementById('rehabSessionsPerWeek').value,
-                rehabTotalSessions: document.getElementById('rehabTotalSessions').value,
-                rehabCompletedSessions: document.getElementById('rehabCompletedSessions').value,
-                recoveryOutcomes: Array.from(document.querySelectorAll('input[name="recoveryOutcome"]:checked')).map(cb => cb.value),
-                eventDate: document.getElementById('eventDate').value,
-                whatHappened: document.getElementById('whatHappened').value,
-                interventions: document.getElementById('interventions').value,
-                patientResponse: document.getElementById('patientResponse').value
-            };
-            document.querySelectorAll('.adl-scale').forEach(scale => {
-                const selected = scale.querySelector('.adl-btn.selected');
-                if (selected) formData.adlScores[scale.dataset.adl] = parseInt(selected.dataset.value);
-            });
-            document.querySelectorAll('.severity-scale').forEach(scale => {
-                const selected = scale.querySelector('.severity-btn.selected');
-                if (selected) formData.sideEffects[scale.dataset.effect] = parseInt(selected.dataset.value);
-            });
-            const oldLength = entries.length;
-            const recoveryAssessment = calculateRecoveryScore(formData);
-            formData.recoveryAssessment = recoveryAssessment;
-            formData.usedCustom = physicianUnlocked;
-            entries.unshift(formData);
-            setEncryptedStorage('cardiacEntries', entries);
-            syncToBackend(formData)
-                .then(() => console.log('Entry synced successfully'))
-                .catch(error => console.error('Sync error:', error));
-            logAudit('save-entry', { score: recoveryAssessment.recoveryScore });
-            // Update legend and why-status
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            const pillMap = { excellent: 'normalPill', good: 'normalPill', fair: 'watchPill', poor: 'alertPill', critical: 'alertPill' };
-            document.getElementById(pillMap[recoveryAssessment.className]).classList.add('active');
-            let breakdown = '';
-            for (let [k, v] of Object.entries(recoveryAssessment.subScores)) {
-                breakdown += `${k}: ${v}/${weights[k]}<br>`;
-            }
-            document.getElementById('statusBreakdown').innerHTML = breakdown;
-            document.getElementById('whyStatus').classList.add('open');
-            // Toast
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = `Logged: ${formData.date} - Score ${recoveryAssessment.recoveryScore}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-            // Alert
-            if (recoveryAssessment.className === 'critical') {
-                alert('🚨 CRITICAL RECOVERY SCORE!\n\n' + recoveryAssessment.message + '\n\nPlease contact your medical provider immediately.');
-            } else {
-                alert('✅ Entry saved successfully!\n\nRecovery Score: ' + recoveryAssessment.recoveryScore + '/100 (Grade ' + recoveryAssessment.grade + ')\n' + recoveryAssessment.status);
-            }
-            // Re-render and scroll
-            renderEntries(true);
-            document.getElementById('entriesContainer').scrollIntoView({ behavior: 'smooth' });
-            // Post-save check
-            if (entries.length !== oldLength + 1) {
-                alert('Save may have failed. Please retry.');
-                entries = getEncryptedStorage('cardiacEntries', []);
-            }
-            // Clear form
-            document.getElementById('clearForm').click();
-        });
-        // Device Integration - Web Bluetooth
-        async function connectBPDevice() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [0x1810] }] // Blood Pressure service UUID
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(0x1810);
-                const characteristic = await service.getCharacteristic(0x2A35); // Blood Pressure Measurement
-                const value = await characteristic.readValue();
-                const bp = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
-                document.getElementById('heartRate').value = bp.pulse;
-            } catch (error) {
-                console.error('BP connect error:', error);
-                alert('Failed to connect to BP device.');
-            }
-        }
-        async function connectPulseOxDevice() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [0x1822] }] // Pulse Oximeter service UUID
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(0x1822);
-                const characteristic = await service.getCharacteristic(0x2A5F); // PLX Spot-Check Measurement
-                const value = await characteristic.readValue();
-                const ox = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('oxygenSat').value = ox.spO2;
-                document.getElementById('heartRate').value = ox.pulse;
-            } catch (error) {
-                console.error('Pulse Ox connect error:', error);
-                alert('Failed to connect to Pulse Ox device.');
-            }
-        }
-        // IEEE 11073 Parser (32-bit FLOAT)
-        function parseIEEE11073Float(dataview) {
-            const exponent = dataview.getInt8(3);
-            let mantissa = dataview.getInt32(0, true) & 0x00ffffff;
-            if (mantissa >= Math.pow(2, 23)) mantissa -= Math.pow(2, 24);
-            return mantissa * Math.pow(10, exponent);
-        }
-        // Real-time validation
-        // Initial saved context
-        const savedProcedures = getEncryptedStorage('procedures', []);
-        const savedHospitalStay = getEncryptedStorage('hospitalStay');
-        const savedHospitalComplications = getEncryptedStorage('hospitalComplications');
-        if (savedProcedures.length) {
-            document.querySelectorAll('#procedures option').forEach(opt => {
-                if (savedProcedures.includes(opt.value)) opt.selected = true;
-            });
-        }
-        if (savedHospitalStay) document.getElementById('hospitalStay').value = savedHospitalStay;
-        if (savedHospitalComplications) document.getElementById('hospitalComplications').value = savedHospitalComplications;
-        // Save context to encrypted storage
-        document.getElementById('procedures').addEventListener('change', function () {
-            const selected = Array.from(this.selectedOptions).map(opt => opt.value);
-            setEncryptedStorage('procedures', selected);
-            logAudit('update-procedures', { procedures: selected });
-        });
-        document.getElementById('hospitalStay').addEventListener('change', function () {
-            setEncryptedStorage('hospitalStay', this.value);
-            logAudit('update-hospital-stay', { days: this.value });
-        });
-        document.getElementById('hospitalComplications').addEventListener('change', function () {
-            setEncryptedStorage('hospitalComplications', this.value);
-            logAudit('update-hospital-complications', { complication: this.value });
-        });
-        // Modals
-        function openScoringModal() {
-            document.getElementById('scoringModal').style.display = 'block';
-            logAudit('view-scoring-guide');
-        }
-        function closeScoringModal() {
-            document.getElementById('scoringModal').style.display = 'none';
-        }
-        function openWhatsNewModal() {
-            document.getElementById('whatsNewModal').style.display = 'block';
-        }
-        function closeWhatsNewModal() {
-            document.getElementById('whatsNewModal').style.display = 'none';
-        }
-        window.onclick = function (event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        }
+        
     </script>
 </body>
 </html>
