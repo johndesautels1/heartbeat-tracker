@@ -5136,8 +5136,6 @@
             // Update analytics
             updateAnalytics(filteredEntries);
         }
-        // Local storage for entries (encrypted)
-        let entries = getEncryptedStorage('cardiacEntries', []);
         // Form submission with validation, toast, pinned, etc.
         document.getElementById('dataForm').addEventListener('submit', function (e) {
             e.preventDefault();
