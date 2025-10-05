@@ -5137,7 +5137,6 @@
             updateAnalytics(filteredEntries);
         }
         // Local storage for entries (encrypted)
-        let entries = getEncryptedStorage('cardiacEntries', []);
         // Form submission with validation, toast, pinned, etc.
         document.getElementById('dataForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -5417,7 +5416,7 @@
                 document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
                 document.getElementById('heartRate').value = bp.pulse;
             } catch (error) {
-                console.error('BP connect error:', e);
+                console.error('BP connect error:', error);
                 alert('Failed to connect to BP device.');
             }
         }
@@ -5798,92 +5797,6 @@
             document.getElementById('clearForm').click();
         });
         // Device Integration - Web Bluetooth
-        async function connectBPDevice() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [0x1810] }] // Blood Pressure service UUID
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(0x1810);
-                const characteristic = await service.getCharacteristic(0x2A35); // Blood Pressure Measurement
-                const value = await characteristic.readValue();
-                const bp = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
-                document.getElementById('heartRate').value = bp.pulse;
-            } catch (error) {
-                console.error('BP connect error:', error);
-                alert('Failed to connect to BP device.');
-            }
-        }
-        async function connectPulseOxDevice() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [0x1822] }] // Pulse Oximeter service UUID
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(0x1822);
-                const characteristic = await service.getCharacteristic(0x2A5F); // PLX Spot-Check Measurement
-                const value = await characteristic.readValue();
-                const ox = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('oxygenSat').value = ox.spO2;
-                document.getElementById('heartRate').value = ox.pulse;
-            } catch (error) {
-                console.error('Pulse Ox connect error:', error);
-                alert('Failed to connect to Pulse Ox device.');
-            }
-        }
-        // IEEE 11073 Parser (32-bit FLOAT)
-        function parseIEEE11073Float(dataview) {
-            const exponent = dataview.getInt8(3);
-            let mantissa = dataview.getInt32(0, true) & 0x00ffffff;
-            if (mantissa >= Math.pow(2, 23)) mantissa -= Math.pow(2, 24);
-            return mantissa * Math.pow(10, exponent);
-        }
-        // Real-time validation
-        // Initial saved context
-        const savedProcedures = getEncryptedStorage('procedures', []);
-        const savedHospitalStay = getEncryptedStorage('hospitalStay');
-        const savedHospitalComplications = getEncryptedStorage('hospitalComplications');
-        if (savedProcedures.length) {
-            document.querySelectorAll('#procedures option').forEach(opt => {
-                if (savedProcedures.includes(opt.value)) opt.selected = true;
-            });
-        }
-        if (savedHospitalStay) document.getElementById('hospitalStay').value = savedHospitalStay;
-        if (savedHospitalComplications) document.getElementById('hospitalComplications').value = savedHospitalComplications;
-        // Save context to encrypted storage
-        document.getElementById('procedures').addEventListener('change', function () {
-            const selected = Array.from(this.selectedOptions).map(opt => opt.value);
-            setEncryptedStorage('procedures', selected);
-            logAudit('update-procedures', { procedures: selected });
-        });
-        document.getElementById('hospitalStay').addEventListener('change', function () {
-            setEncryptedStorage('hospitalStay', this.value);
-            logAudit('update-hospital-stay', { days: this.value });
-        });
-        document.getElementById('hospitalComplications').addEventListener('change', function () {
-            setEncryptedStorage('hospitalComplications', this.value);
-            logAudit('update-hospital-complications', { complication: this.value });
-        });
-        // Modals
-        function openScoringModal() {
-            document.getElementById('scoringModal').style.display = 'block';
-            logAudit('view-scoring-guide');
-        }
-        function closeScoringModal() {
-            document.getElementById('scoringModal').style.display = 'none';
-        }
-        function openWhatsNewModal() {
-            document.getElementById('whatsNewModal').style.display = 'block';
-        }
-        function closeWhatsNewModal() {
-            document.getElementById('whatsNewModal').style.display = 'none';
-        }
-        window.onclick = function (event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        }
     </script>
 </body>
 </html>
