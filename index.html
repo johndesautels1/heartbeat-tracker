@@ -22,31 +22,26 @@
             --cyan: #06b6d4;
             --pink: #ec4899;
         }
-
         * {
             box-sizing: border-box
         }
-
         html,
         body {
             height: 100%;
             margin: 0;
             padding: 0
         }
-
         body {
             font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             background: linear-gradient(135deg, var(--bg), #0d1420 50%, #060812);
             color: var(--ink);
             line-height: 1.5;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px
         }
-
         header {
             background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(96, 165, 250, 0.2));
             border: 2px solid rgba(236, 72, 153, 0.3);
@@ -57,7 +52,6 @@
             position: relative;
             overflow: hidden;
         }
-
         header::before {
             content: '💓';
             position: absolute;
@@ -68,22 +62,18 @@
             opacity: 0.15;
             animation: heartbeat 1.5s ease-in-out infinite;
         }
-
         @keyframes heartbeat {
             0%,
             100% {
                 transform: translateY(-50%) scale(1);
             }
-
             25% {
                 transform: translateY(-50%) scale(1.1);
             }
-
             50% {
                 transform: translateY(-50%) scale(1);
             }
         }
-
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -93,19 +83,16 @@
             position: relative;
             z-index: 1
         }
-
         .header-left {
             display: flex;
             align-items: center;
             gap: 16px
         }
-
         .heart-icon {
             font-size: 3.5rem;
             animation: heartbeat 1.5s ease-in-out infinite;
             filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.6));
         }
-
         h1 {
             margin: 0;
             font-size: clamp(24px, 3.5vw, 32px);
@@ -116,7 +103,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text
         }
-
         .app-subtitle {
             color: var(--cyan);
             font-size: 0.95rem;
@@ -124,13 +110,11 @@
             margin-top: 6px;
             letter-spacing: 0.3px
         }
-
         .patient-info {
             color: var(--muted);
             font-size: 0.95rem;
             margin-top: 4px
         }
-
         .date-display {
             background: rgba(255, 255, 255, 0.06);
             padding: 10px 18px;
@@ -138,15 +122,14 @@
             font-weight: 600;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
-
         .controls {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
         button,
         select {
             appearance: none;
@@ -160,73 +143,59 @@
             font-size: 0.95rem;
             transition: all 0.2s;
         }
-
         button:hover {
             background: rgba(96, 165, 250, 0.25);
             transform: translateY(-1px)
         }
-
         button:active {
             transform: translateY(0)
         }
-
         select {
             background: rgba(255, 255, 255, 0.08);
             color: #ffffff;
         }
-
         select option {
             background: #1f2937;
             color: #ffffff;
             padding: 8px;
         }
-
         .legend {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             margin-left: auto;
         }
-
         .pill {
             padding: 6px 12px;
             border-radius: 999px;
             font-size: 0.85rem;
             font-weight: 600;
         }
-
         .pill.good {
             background: rgba(34, 197, 94, 0.2);
             border: 1px solid rgba(34, 197, 94, 0.4)
         }
-
         .pill.warn {
             background: rgba(245, 158, 11, 0.2);
             border: 1px solid rgba(245, 158, 11, 0.4)
         }
-
         .pill.bad {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid rgba(239, 68, 68, 0.4)
         }
-
         .pill.active {
             box-shadow: 0 0 10px currentColor;
             animation: glow 2s infinite
         }
-
         @keyframes glow {
-
             0%,
             100% {
                 opacity: 1
             }
-
             50% {
                 opacity: 0.7
             }
         }
-
         .entry-form {
             background: var(--card);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -235,19 +204,16 @@
             margin-bottom: 24px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
-
         .section {
             margin-bottom: 28px;
             padding-bottom: 28px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .section:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0
         }
-
         .section-header {
             display: flex;
             align-items: center;
@@ -258,11 +224,9 @@
             font-size: 1.1rem;
             letter-spacing: 0.3px;
         }
-
         .section-icon {
             font-size: 1.3rem
         }
-
         .section-badge {
             padding: 4px 8px;
             border-radius: 999px;
@@ -270,46 +234,37 @@
             font-weight: 600;
             margin-left: auto;
         }
-
         .section-badge.good {
             background: var(--good);
             color: #fff
         }
-
         .section-badge.warn {
             background: var(--warn);
             color: #000
         }
-
         .section-badge.bad {
             background: var(--bad);
             color: #fff
         }
-
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
         }
-
         .form-grid.cols-2 {
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
         }
-
         .form-grid.cols-3 {
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
         }
-
         .form-grid.cols-4 {
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
         }
-
         .field {
             display: flex;
             flex-direction: column;
             gap: 6px
         }
-
         .field label {
             font-size: 0.9rem;
             font-weight: 600;
@@ -318,7 +273,6 @@
             align-items: center;
             gap: 6px;
         }
-
         .field input,
         .field select,
         .field textarea {
@@ -331,7 +285,6 @@
             font-family: inherit;
             transition: all 0.2s;
         }
-
         .field input:focus,
         .field select:focus,
         .field textarea:focus {
@@ -339,16 +292,13 @@
             border-color: var(--accent);
             background: rgba(255, 255, 255, 0.06);
         }
-
         .field textarea {
             resize: vertical;
             min-height: 80px
         }
-
         .field input::placeholder {
             color: #6b7280
         }
-
         .pain-scale,
         .wellbeing-scale,
         .adl-scale {
@@ -356,7 +306,6 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-
         .pain-btn,
         .wellbeing-btn,
         .adl-btn {
@@ -371,13 +320,11 @@
             font-weight: 600;
             transition: all 0.2s;
         }
-
         .pain-btn:hover,
         .wellbeing-btn:hover,
         .adl-btn:hover {
             background: rgba(255, 255, 255, 0.08)
         }
-
         .pain-btn.selected,
         .wellbeing-btn.selected,
         .adl-btn.selected {
@@ -385,27 +332,23 @@
             border-color: var(--accent);
             color: #000;
         }
-
         .pain-btn.selected.high {
             background: var(--bad);
             border-color: var(--bad);
             color: #fff
         }
-
         .wellbeing-btn.selected.high,
         .adl-btn.selected.high {
             background: var(--good);
             border-color: var(--good);
             color: #fff
         }
-
         .wellbeing-btn.selected.low,
         .adl-btn.selected.low {
             background: var(--bad);
             border-color: var(--bad);
             color: #fff
         }
-
         .submit-section {
             margin-top: 24px;
             padding-top: 24px;
@@ -414,7 +357,6 @@
             gap: 12px;
             justify-content: flex-end;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, var(--pink), var(--purple));
             border: none;
@@ -423,11 +365,9 @@
             font-weight: 700;
             color: #fff;
         }
-
         .btn-primary:hover {
             box-shadow: 0 4px 20px rgba(236, 72, 153, 0.5);
         }
-
         .history {
             background: var(--card);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -435,26 +375,22 @@
             padding: 24px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
-
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-
         .history h2 {
             margin: 0;
             font-size: 1.4rem;
             color: var(--pink)
         }
-
         .entries {
             max-height: 600px;
             overflow-y: auto;
             margin-top: 16px
         }
-
         .entry-card {
             background: var(--card-light);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -463,17 +399,14 @@
             margin-bottom: 12px;
             transition: all 0.2s;
         }
-
         .entry-card:hover {
             border-color: rgba(236, 72, 153, 0.4);
             transform: translateX(2px);
         }
-
         .entry-card.pinned {
             border-color: var(--accent);
             background: var(--card-light)
         }
-
         .entry-header {
             display: flex;
             justify-content: space-between;
@@ -482,42 +415,35 @@
             padding-bottom: 8px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .entry-date {
             font-weight: 700;
             color: var(--pink);
             font-size: 1rem
         }
-
         .entry-time {
             color: var(--muted);
             font-size: 0.9rem
         }
-
         .entry-data {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
             font-size: 0.9rem;
         }
-
         .data-point {
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
-
         .data-label {
             color: var(--muted);
             font-size: 0.85rem;
             font-weight: 500
         }
-
         .data-value {
             font-weight: 600;
             font-size: 0.95rem
         }
-
         .alert-summary {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
@@ -528,7 +454,6 @@
             font-weight: 600;
             font-size: 0.9rem;
         }
-
         .recovery-score-display {
             background: linear-gradient(135deg, rgba(96, 165, 250, 0.2), rgba(167, 139, 250, 0.2));
             border: 2px solid rgba(96, 165, 250, 0.4);
@@ -539,105 +464,86 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .recovery-score-display.excellent {
             border-color: var(--good);
             background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(6, 182, 212, 0.15))
         }
-
         .recovery-score-display.good {
             border-color: var(--cyan);
             background: rgba(6, 182, 212, 0.15)
         }
-
         .recovery-score-display.fair {
             border-color: var(--warn);
             background: rgba(245, 158, 11, 0.15)
         }
-
         .recovery-score-display.poor {
             border-color: var(--bad);
             background: rgba(239, 68, 68, 0.15)
         }
-
         .recovery-score-display.critical {
             border-color: #dc2626;
             background: rgba(220, 38, 38, 0.2);
             animation: pulse 2s infinite
         }
-
         @keyframes pulse {
-
             0%,
             100% {
                 opacity: 1;
             }
-
             50% {
                 opacity: 0.7;
             }
         }
-
         .score-number {
             font-size: 3rem;
             font-weight: 800;
             line-height: 1;
         }
-
         .score-grade {
             font-size: 1.2rem;
             font-weight: 700;
             margin-top: 4px;
         }
-
         .score-label {
             font-size: 0.9rem;
             color: var(--muted);
             margin-top: 2px;
         }
-
         .empty-state {
             text-align: center;
             padding: 48px 24px;
             color: var(--muted);
         }
-
         .helper-text {
             font-size: 0.85rem;
             color: var(--muted);
             margin-top: 4px;
             font-style: italic;
         }
-
         .error-text {
             font-size: 0.85rem;
             color: var(--bad);
             margin-top: 4px;
         }
-
         .medication-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 12px;
             align-items: end;
         }
-
         .walking-session {
             display: flex;
             gap: 8px;
             align-items: center;
             margin-bottom: 8px;
         }
-
         .walking-session input {
             flex: 1;
         }
-
         .add-session-btn {
             padding: 8px 12px;
             font-size: 0.85rem;
         }
-
         .footer-brand {
             text-align: center;
             margin-top: 40px;
@@ -645,7 +551,6 @@
             border-top: 2px solid rgba(236, 72, 153, 0.3);
             color: var(--muted);
         }
-
         .brand-name {
             font-size: 1.2rem;
             font-weight: 800;
@@ -655,59 +560,47 @@
             background-clip: text;
             margin-bottom: 4px;
         }
-
         .brand-tagline {
             font-size: 0.9rem;
             color: var(--cyan);
             font-weight: 600;
         }
-
         @media print {
-
             body {
                 background: #fff;
                 color: #000
             }
-
             .controls,
             .submit-section {
                 display: none
             }
-
             .entry-form {
                 border: 1px solid #ccc
             }
         }
-
         @media (max-width:768px) {
-
             .form-grid {
                 grid-template-columns: 1fr
             }
-
             .form-grid.cols-2,
             .form-grid.cols-3,
             .form-grid.cols-4 {
                 grid-template-columns: 1fr
             }
-
             .header-content {
                 flex-direction: column;
                 align-items: flex-start
             }
-
             header::before {
                 font-size: 4rem;
                 right: 10px
             }
         }
-
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
         }
-
         .checkbox-item {
             display: flex;
             align-items: center;
@@ -719,22 +612,18 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .checkbox-item:hover {
             background: rgba(255, 255, 255, 0.08)
         }
-
         .checkbox-item input[type="checkbox"] {
             cursor: pointer;
             width: 18px;
             height: 18px;
         }
-
         .checkbox-item.checked {
             background: rgba(96, 165, 250, 0.2);
             border-color: var(--accent);
         }
-
         .cycle-indicator {
             display: inline-flex;
             align-items: center;
@@ -746,7 +635,6 @@
             background: rgba(167, 139, 250, 0.2);
             border: 1px solid rgba(167, 139, 250, 0.4);
         }
-
         .adl-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -754,14 +642,12 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .adl-item-header {
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--cyan);
             margin-bottom: 10px;
         }
-
         .med-adherence-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -769,52 +655,44 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .med-adherence-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-
         .med-name {
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--cyan);
         }
-
         .adherence-status {
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
         }
-
         .adherence-status.compliant {
             background: rgba(34, 197, 94, 0.2);
             border: 1px solid rgba(34, 197, 94, 0.4);
             color: var(--good);
         }
-
         .adherence-status.missed {
             background: rgba(245, 158, 11, 0.2);
             border: 1px solid rgba(245, 158, 11, 0.4);
             color: var(--warn);
         }
-
         .adherence-status.skipped {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid rgba(239, 68, 68, 0.4);
             color: var(--bad);
         }
-
         .dose-tracker {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             margin-top: 10px;
         }
-
         .dose-slot {
             padding: 6px 12px;
             background: rgba(255, 255, 255, 0.04);
@@ -824,23 +702,19 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .dose-slot:hover {
             background: rgba(255, 255, 255, 0.08)
         }
-
         .dose-slot.taken {
             background: rgba(34, 197, 94, 0.2);
             border-color: var(--good);
             color: var(--good);
         }
-
         .dose-slot.missed {
             background: rgba(239, 68, 68, 0.2);
             border-color: var(--bad);
             color: var(--bad);
         }
-
         .vitamin-k-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -851,37 +725,31 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .vitamin-k-food {
             font-weight: 600;
             color: var(--cyan);
         }
-
         .vitamin-k-level {
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
         }
-
         .vitamin-k-level.high {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid var(--bad);
             color: var(--bad);
         }
-
         .vitamin-k-level.moderate {
             background: rgba(245, 158, 11, 0.2);
             border: 1px solid var(--warn);
             color: var(--warn);
         }
-
         .vitamin-k-level.low {
             background: rgba(34, 197, 94, 0.2);
             border: 1px solid var(--good);
             color: var(--good);
         }
-
         .wound-photo-upload {
             margin-top: 12px;
             padding: 16px;
@@ -890,11 +758,9 @@
             border-radius: 8px;
             text-align: center;
         }
-
         .wound-photo-upload input[type="file"] {
             display: none;
         }
-
         .upload-btn {
             background: var(--accent);
             color: #000;
@@ -904,14 +770,12 @@
             font-weight: 600;
             cursor: pointer;
         }
-
         .photo-preview {
             margin-top: 12px;
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-
         .photo-preview img {
             width: 100px;
             height: 100px;
@@ -919,7 +783,6 @@
             border-radius: 8px;
             border: 2px solid rgba(255, 255, 255, 0.1);
         }
-
         .complication-warning {
             background: rgba(239, 68, 68, 0.15);
             border: 2px solid var(--bad);
@@ -928,7 +791,6 @@
             margin-top: 12px;
             font-weight: 600;
         }
-
         .side-effect-tracker {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -936,19 +798,16 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .side-effect-header {
             font-weight: 600;
             color: var(--cyan);
             margin-bottom: 8px;
         }
-
         .severity-scale {
             display: flex;
             gap: 6px;
             margin-top: 8px;
         }
-
         .severity-btn {
             flex: 1;
             padding: 6px;
@@ -960,24 +819,20 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .severity-btn:hover {
             background: rgba(255, 255, 255, 0.08)
         }
-
         .severity-btn.selected {
             background: var(--warn);
             border-color: var(--warn);
             color: #000;
             font-weight: 700;
         }
-
         .severity-btn.selected.severe {
             background: var(--bad);
             border-color: var(--bad);
             color: #fff;
         }
-
         .phq9-question {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -985,20 +840,17 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .phq9-question-text {
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--ink);
             margin-bottom: 10px;
         }
-
         .phq9-options {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-
         .phq9-option {
             flex: 1;
             min-width: 120px;
@@ -1011,18 +863,15 @@
             font-size: 0.85rem;
             transition: all 0.2s;
         }
-
         .phq9-option:hover {
             background: rgba(255, 255, 255, 0.08)
         }
-
         .phq9-option.selected {
             background: var(--accent);
             border-color: var(--accent);
             color: #000;
             font-weight: 600;
         }
-
         .phq9-score-display {
             background: linear-gradient(135deg, rgba(96, 165, 250, 0.2), rgba(167, 139, 250, 0.2));
             border: 2px solid rgba(96, 165, 250, 0.4);
@@ -1031,45 +880,37 @@
             margin-top: 16px;
             text-align: center;
         }
-
         .phq9-score-display.minimal {
             border-color: var(--good);
             background: rgba(34, 197, 94, 0.15)
         }
-
         .phq9-score-display.mild {
             border-color: var(--cyan);
             background: rgba(6, 182, 212, 0.15)
         }
-
         .phq9-score-display.moderate {
             border-color: var(--warn);
             background: rgba(245, 158, 11, 0.15)
         }
-
         .phq9-score-display.moderately-severe {
             border-color: var(--bad);
             background: rgba(239, 68, 68, 0.15)
         }
-
         .phq9-score-display.severe {
             border-color: #dc2626;
             background: rgba(220, 38, 38, 0.2);
             animation: pulse 2s infinite
         }
-
         .phq9-score-number {
             font-size: 2.5rem;
             font-weight: 800;
             line-height: 1;
         }
-
         .phq9-score-severity {
             font-size: 1.1rem;
             font-weight: 700;
             margin-top: 8px;
         }
-
         .phq9-crisis-box {
             background: rgba(220, 38, 38, 0.2);
             border: 3px solid var(--bad);
@@ -1078,14 +919,12 @@
             margin-top: 16px;
             text-align: center;
         }
-
         .phq9-crisis-title {
             font-size: 1.3rem;
             font-weight: 800;
             color: var(--bad);
             margin-bottom: 12px;
         }
-
         .phq9-crisis-number {
             font-size: 2rem;
             font-weight: 800;
@@ -1095,7 +934,6 @@
             background: var(--bad);
             border-radius: 8px;
         }
-
         .exercise-comparison {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1103,7 +941,6 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .exercise-metric {
             display: flex;
             justify-content: space-between;
@@ -1112,64 +949,53 @@
             padding-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .exercise-metric:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0
         }
-
         .exercise-metric-name {
             font-weight: 600;
             color: var(--cyan);
         }
-
         .exercise-values {
             display: flex;
             gap: 16px;
             align-items: center;
         }
-
         .exercise-value {
             text-align: center;
         }
-
         .exercise-value-label {
             font-size: 0.75rem;
             color: var(--muted);
             text-transform: uppercase;
         }
-
         .exercise-value-number {
             font-size: 1.1rem;
             font-weight: 700;
         }
-
         .exercise-achievement {
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
         }
-
         .exercise-achievement.exceeded {
             background: rgba(34, 197, 94, 0.2);
             border: 1px solid var(--good);
             color: var(--good);
         }
-
         .exercise-achievement.met {
             background: rgba(6, 182, 212, 0.2);
             border: 1px solid var(--cyan);
             color: var(--cyan);
         }
-
         .exercise-achievement.below {
             background: rgba(245, 158, 11, 0.2);
             border: 1px solid var(--warn);
             color: var(--warn);
         }
-
         .provider-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1177,45 +1003,38 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .provider-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-
         .provider-name {
             font-size: 1rem;
             font-weight: 700;
             color: var(--cyan);
         }
-
         .provider-status {
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
         }
-
         .provider-status.current {
             background: rgba(34, 197, 94, 0.2);
             border: 1px solid var(--good);
             color: var(--good);
         }
-
         .provider-status.upcoming {
             background: rgba(6, 182, 212, 0.2);
             border: 1px solid var(--cyan);
             color: var(--cyan);
         }
-
         .provider-status.overdue {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid var(--bad);
             color: var(--bad);
         }
-
         .inr-history-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1226,53 +1045,44 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .inr-date {
             font-weight: 600;
             color: var(--cyan);
         }
-
         .inr-details {
             display: flex;
             gap: 16px;
             align-items: center;
         }
-
         .inr-value {
             font-size: 1.1rem;
             font-weight: 700;
         }
-
         .inr-dose {
             font-size: 0.9rem;
             color: var(--muted);
         }
-
         .inr-status {
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
         }
-
         .inr-status.therapeutic {
             background: rgba(34, 197, 94, 0.2);
             border: 1px solid var(--good);
             color: var(--good);
         }
-
         .inr-status.subtherapeutic {
             background: rgba(245, 158, 11, 0.2);
             border: 1px solid var(--warn);
             color: var(--warn);
         }
-
         .inr-status.supratherapeutic {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid var(--bad);
             color: var(--bad);
         }
-
         .device-reading {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1280,54 +1090,44 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .device-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-
         .device-name {
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--cyan);
         }
-
         .device-timestamp {
             font-size: 0.8rem;
             color: var(--muted);
         }
-
         .device-metrics {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
         }
-
         .device-metric {
             flex: 1;
             min-width: 120px;
         }
-
         .device-metric-label {
             font-size: 0.8rem;
             color: var(--muted);
         }
-
         .device-metric-value {
             font-size: 1.2rem;
             font-weight: 700;
         }
-
         /* Tab Styles */
-
         .tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
         }
-
         .tab-btn {
             flex: 1;
             padding: 12px;
@@ -1339,50 +1139,38 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .tab-btn.active {
             background: var(--accent);
             color: #000;
             border-color: var(--accent);
         }
-
         .tab-btn:hover {
             background: rgba(96, 165, 250, 0.25);
         }
-
         .tab-btn:focus {
             outline: 2px solid var(--accent);
         }
-
         .tab-panel {
             display: none;
         }
-
         .tab-panel.active {
             display: block;
         }
-
         /* History Controls */
-
         .history-controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
-
         /* Charts */
-
         .charts {
             margin-bottom: 24px;
         }
-
         .charts canvas {
             max-height: 300px;
             margin-bottom: 24px;
         }
-
         /* SR-only for accessibility */
-
         .sr-only {
             position: absolute;
             width: 1px;
@@ -1394,9 +1182,7 @@
             white-space: nowrap;
             border: 0;
         }
-
         /* Modal Styles */
-
         .modal {
             display: none;
             position: fixed;
@@ -1408,7 +1194,6 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.5)
         }
-
         .modal-content {
             background: var(--card);
             margin: 5% auto;
@@ -1420,7 +1205,6 @@
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5)
         }
-
         .close {
             position: absolute;
             right: 20px;
@@ -1430,45 +1214,37 @@
             font-weight: bold;
             cursor: pointer
         }
-
         .close:hover {
             color: var(--ink)
         }
-
         .scoring-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 16px
         }
-
         .scoring-table th,
         .scoring-table td {
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 12px;
             text-align: left
         }
-
         .scoring-table th {
             background: rgba(96, 165, 250, 0.1);
             color: var(--accent)
         }
-
         .accordion details {
             margin-bottom: 12px
         }
-
         .accordion summary {
             cursor: pointer;
             padding: 12px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px
         }
-
         .accordion input[type=range] {
             width: 100%;
             margin: 8px 0
         }
-
         .review-context-btn {
             margin-bottom: 12px;
             padding: 8px 16px;
@@ -1478,7 +1254,6 @@
             border-radius: 8px;
             cursor: pointer
         }
-
         .context-pill {
             display: inline-block;
             background: rgba(96, 165, 250, 0.2);
@@ -1487,14 +1262,12 @@
             margin: 2px;
             font-size: 0.85rem
         }
-
         .saved-indicator {
             display: inline-block;
             margin-left: 8px;
             color: var(--good);
             font-size: 0.8rem
         }
-
         .toast {
             position: fixed;
             bottom: 20px;
@@ -1506,37 +1279,30 @@
             z-index: 1001;
             animation: fadeInOut 3s forwards
         }
-
         @keyframes fadeInOut {
-
             0% {
                 opacity: 0;
                 transform: translateY(20px)
             }
-
             10% {
                 opacity: 1;
                 transform: translateY(0)
             }
-
             90% {
                 opacity: 1;
                 transform: translateY(0)
             }
-
             100% {
                 opacity: 0;
                 transform: translateY(20px)
             }
         }
-
         .dashboard-pills {
             display: flex;
             gap: 8px;
             margin-bottom: 16px;
             flex-wrap: wrap
         }
-
         .dashboard-pill {
             cursor: pointer;
             padding: 6px 12px;
@@ -1544,37 +1310,30 @@
             font-size: 0.85rem;
             font-weight: 600
         }
-
         .dashboard-pill.good {
             background: var(--good);
             color: #fff
         }
-
         .dashboard-pill.warn {
             background: var(--warn);
             color: #000
         }
-
         .dashboard-pill.bad {
             background: var(--bad);
             color: #fff
         }
-
         .post-surgical-collapsible {
             margin-top: 12px
         }
-
         .post-surgical-content {
             display: none;
             padding: 16px;
             background: var(--card-light);
             border-radius: 8px
         }
-
         .post-surgical-content.open {
             display: block
         }
-
         .toggle-collapse {
             padding: 4px 8px;
             background: var(--accent);
@@ -1583,14 +1342,12 @@
             cursor: pointer;
             margin-left: 8px
         }
-
         .info-icon {
             cursor: pointer;
             font-size: 1.5rem;
             color: var(--accent);
             margin-left: 16px
         }
-
         .why-status {
             display: none;
             padding: 12px;
@@ -1598,32 +1355,25 @@
             border-radius: 8px;
             margin-top: 8px
         }
-
         .why-status.open {
             display: block
         }
-
         /* Added for enhanced analytics */
-
         .analytics-section {
             background: var(--card-light);
             border-radius: 12px;
             padding: 16px;
             margin-top: 24px;
         }
-
         .correlation-matrix {
             margin-top: 16px;
         }
-
         .trend-alert {
             color: var(--warn);
             font-weight: 600;
             margin-top: 12px;
         }
-
         /* Device integration styles */
-
         .device-connect-btn {
             background: var(--cyan);
             color: #000;
@@ -1631,7 +1381,6 @@
             border-radius: 8px;
             margin-left: 8px;
         }
-
         .device-status {
             font-size: 0.85rem;
             color: var(--muted);
@@ -1643,7 +1392,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-
 <body>
     <div class="container">
         <header>
@@ -1731,7 +1479,7 @@
                             </div>
                             <div class="field">
                                 <label for="procedures">Procedures Performed</label>
-                                <select id="procedures" multiple>
+                                <select id="procedures" multiple aria-label="Procedures Performed">
                                     <option value="cabg">CABG (Coronary Artery Bypass Graft)</option>
                                     <option value="valve-replacement">Valve Replacement</option>
                                     <option value="valve-repair">Valve Repair</option>
@@ -1746,7 +1494,7 @@
                                 <label for="hospitalStay">Hospital Stay (days)</label>
                                 <input type="number" id="hospitalStay" min="0" placeholder="e.g., 7">
                                 <label for="hospitalComplications">Hospital Complications</label>
-                                <select id="hospitalComplications">
+                                <select id="hospitalComplications" aria-label="Hospital Complications">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="infection">Infection</option>
@@ -1853,7 +1601,7 @@
                         <div class="form-grid cols-3">
                             <div class="field">
                                 <label for="rhythm">Heart Rhythm</label>
-                                <select id="rhythm">
+                                <select id="rhythm" aria-label="Heart Rhythm">
                                     <option value="">Select...</option>
                                     <option value="regular">Regular/Normal Sinus</option>
                                     <option value="irregular">Irregular (AFib)</option>
@@ -1874,7 +1622,7 @@
                             </div>
                             <div class="field">
                                 <label for="palpitations">Palpitations Frequency</label>
-                                <select id="palpitations">
+                                <select id="palpitations" aria-label="Palpitations Frequency">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="rare">Rare (1-2/day)</option>
@@ -1885,7 +1633,7 @@
                             </div>
                             <div class="field">
                                 <label for="pacemakerIssues">Pacemaker Concerns</label>
-                                <select id="pacemakerIssues">
+                                <select id="pacemakerIssues" aria-label="Pacemaker Concerns">
                                     <option value="">Select...</option>
                                     <option value="none">None - functioning normally</option>
                                     <option value="hiccups">Hiccups/twitching</option>
@@ -1916,7 +1664,7 @@
                         <div class="form-grid cols-2" style="margin-top:16px">
                             <div class="field">
                                 <label for="chestPainTrend">Chest Pain Trend vs Yesterday</label>
-                                <select id="chestPainTrend">
+                                <select id="chestPainTrend" aria-label="Chest Pain Trend vs Yesterday">
                                     <option value="">Select...</option>
                                     <option value="better">Better</option>
                                     <option value="same">Same</option>
@@ -1925,7 +1673,7 @@
                             </div>
                             <div class="field">
                                 <label for="bodyPainTrend">Body Pain Trend vs Yesterday</label>
-                                <select id="bodyPainTrend">
+                                <select id="bodyPainTrend" aria-label="Body Pain Trend vs Yesterday">
                                     <option value="">Select...</option>
                                     <option value="better">Better</option>
                                     <option value="same">Same</option>
@@ -1940,7 +1688,7 @@
                             </div>
                             <div class="field">
                                 <label for="painType">Pain Type</label>
-                                <select id="painType">
+                                <select id="painType" aria-label="Pain Type">
                                     <option value="">Select...</option>
                                     <option value="none">No pain</option>
                                     <option value="sharp">Sharp/stabbing</option>
@@ -1952,7 +1700,7 @@
                             </div>
                             <div class="field">
                                 <label for="incisionStatus">Incision Status</label>
-                                <select id="incisionStatus">
+                                <select id="incisionStatus" aria-label="Incision Status">
                                     <option value="">Select...</option>
                                     <option value="healing-well">Healing well</option>
                                     <option value="some-redness">Some redness</option>
@@ -1968,7 +1716,7 @@
                             <div class="form-grid cols-3">
                                 <div class="field">
                                     <label for="painPosition">Position When Pain Worst</label>
-                                    <select id="painPosition">
+                                    <select id="painPosition" aria-label="Position When Pain Worst">
                                         <option value="">Select...</option>
                                         <option value="lying-flat">Lying flat on back</option>
                                         <option value="lying-side">Lying on side</option>
@@ -1981,7 +1729,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="painTrigger">What Makes Pain Worse</label>
-                                    <select id="painTrigger">
+                                    <select id="painTrigger" aria-label="What Makes Pain Worse">
                                         <option value="">Select...</option>
                                         <option value="deep-breathing">Deep breathing</option>
                                         <option value="twisting">Twisting/rotating</option>
@@ -1995,7 +1743,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="painActivity">Activity When Pain Occurred</label>
-                                    <select id="painActivity">
+                                    <select id="painActivity" aria-label="Activity When Pain Occurred">
                                         <option value="">Select...</option>
                                         <option value="resting">Resting/no activity</option>
                                         <option value="walking">Walking</option>
@@ -2019,7 +1767,7 @@
                         <div class="form-grid cols-3">
                             <div class="field">
                                 <label for="drainageAmount">Drainage Amount</label>
-                                <select id="drainageAmount">
+                                <select id="drainageAmount" aria-label="Drainage Amount">
                                     <option value="">Select...</option>
                                     <option value="none">None - completely dry</option>
                                     <option value="minimal">Minimal (small spot on dressing)</option>
@@ -2030,7 +1778,7 @@
                             </div>
                             <div class="field">
                                 <label for="drainageColor">Drainage Color</label>
-                                <select id="drainageColor">
+                                <select id="drainageColor" aria-label="Drainage Color">
                                     <option value="">Select...</option>
                                     <option value="none">No drainage</option>
                                     <option value="clear">Clear/serous</option>
@@ -2042,7 +1790,7 @@
                             </div>
                             <div class="field">
                                 <label for="woundWarmth">Wound Warmth</label>
-                                <select id="woundWarmth">
+                                <select id="woundWarmth" aria-label="Wound Warmth">
                                     <option value="">Select...</option>
                                     <option value="normal">Normal temperature</option>
                                     <option value="slightly-warm">Slightly warmer than surrounding skin</option>
@@ -2054,7 +1802,7 @@
                         <div class="form-grid cols-3" style="margin-top:12px">
                             <div class="field">
                                 <label for="rednessExtent">Redness Extent</label>
-                                <select id="rednessExtent">
+                                <select id="rednessExtent" aria-label="Redness Extent">
                                     <option value="">Select...</option>
                                     <option value="none">No redness</option>
                                     <option value="incision-line">At incision line only</option>
@@ -2065,7 +1813,7 @@
                             </div>
                             <div class="field">
                                 <label for="woundEdges">Wound Edges</label>
-                                <select id="woundEdges">
+                                <select id="woundEdges" aria-label="Wound Edges">
                                     <option value="">Select...</option>
                                     <option value="well-approximated">Well-approximated (closed)</option>
                                     <option value="slightly-separated">Slightly separated (<5mm)</option>
@@ -2075,7 +1823,7 @@
                             </div>
                             <div class="field">
                                 <label for="surroundingSkin">Surrounding Skin</label>
-                                <select id="surroundingSkin">
+                                <select id="surroundingSkin" aria-label="Surrounding Skin">
                                     <option value="">Select...</option>
                                     <option value="normal">Normal appearance</option>
                                     <option value="dry">Dry/flaky</option>
@@ -2102,7 +1850,7 @@
                         <div class="form-grid cols-3">
                             <div class="field">
                                 <label for="shortnessOfBreath">Shortness of Breath</label>
-                                <select id="shortnessOfBreath">
+                                <select id="shortnessOfBreath" aria-label="Shortness of Breath">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="mild-exertion">Only with significant exertion</option>
@@ -2115,7 +1863,7 @@
                             </div>
                             <div class="field">
                                 <label for="fatigue">Fatigue Level</label>
-                                <select id="fatigue">
+                                <select id="fatigue" aria-label="Fatigue Level">
                                     <option value="">Select...</option>
                                     <option value="none">None - normal energy</option>
                                     <option value="mild">Mild - slightly tired</option>
@@ -2126,7 +1874,7 @@
                             </div>
                             <div class="field">
                                 <label for="dizziness">Dizziness/Lightheadedness</label>
-                                <select id="dizziness">
+                                <select id="dizziness" aria-label="Dizziness/Lightheadedness">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="occasional">Occasional when standing</option>
@@ -2139,7 +1887,7 @@
                         <div class="form-grid cols-3" style="margin-top:12px">
                             <div class="field">
                                 <label for="swelling">Swelling/Edema</label>
-                                <select id="swelling">
+                                <select id="swelling" aria-label="Swelling/Edema">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="ankle">Ankle only</option>
@@ -2151,7 +1899,7 @@
                             </div>
                             <div class="field">
                                 <label for="nausea">Nausea/Appetite</label>
-                                <select id="nausea">
+                                <select id="nausea" aria-label="Nausea/Appetite">
                                     <option value="">Select...</option>
                                     <option value="good-appetite">Good appetite</option>
                                     <option value="decreased-appetite">Decreased appetite</option>
@@ -2166,7 +1914,7 @@
                             </div>
                             <div class="field">
                                 <label for="sleepPosition">Sleep Position</label>
-                                <select id="sleepPosition">
+                                <select id="sleepPosition" aria-label="Sleep Position">
                                     <option value="">Select...</option>
                                     <option value="flat">Completely flat on back</option>
                                     <option value="1-2-pillows">Elevated 1-2 pillows</option>
@@ -2178,7 +1926,7 @@
                             </div>
                             <div class="field">
                                 <label for="wakingSOB">Waking Due to Breathing</label>
-                                <select id="wakingSOB">
+                                <select id="wakingSOB" aria-label="Waking Due to Breathing">
                                     <option value="">Select...</option>
                                     <option value="no">No - slept through</option>
                                     <option value="once">Once during night</option>
@@ -2190,7 +1938,7 @@
                         <div class="form-grid cols-3" style="margin-top:12px">
                             <div class="field">
                                 <label for="cough">Cough</label>
-                                <select id="cough">
+                                <select id="cough" aria-label="Cough">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="occasional-dry">Occasional dry cough</option>
@@ -2201,7 +1949,7 @@
                             </div>
                             <div class="field">
                                 <label for="mood">Anxiety/Mood</label>
-                                <select id="mood">
+                                <select id="mood" aria-label="Anxiety/Mood">
                                     <option value="">Select...</option>
                                     <option value="good">Good/positive</option>
                                     <option value="neutral">Neutral</option>
@@ -2212,7 +1960,7 @@
                             </div>
                             <div class="field">
                                 <label for="sternumClicking">Sternum Clicking/Popping</label>
-                                <select id="sternumClicking">
+                                <select id="sternumClicking" aria-label="Sternum Clicking/Popping">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="mild">Mild clicking occasionally</option>
@@ -2225,7 +1973,7 @@
                         <div class="form-grid cols-3" style="margin-top:12px">
                             <div class="field">
                                 <label for="bowelMovement">Last Bowel Movement</label>
-                                <select id="bowelMovement">
+                                <select id="bowelMovement" aria-label="Last Bowel Movement">
                                     <option value="">Select...</option>
                                     <option value="today">Today</option>
                                     <option value="yesterday">Yesterday (1 day ago)</option>
@@ -2237,7 +1985,7 @@
                             </div>
                             <div class="field">
                                 <label for="stoolConsistency">Stool Consistency</label>
-                                <select id="stoolConsistency">
+                                <select id="stoolConsistency" aria-label="Stool Consistency">
                                     <option value="">Select...</option>
                                     <option value="normal">Normal/soft</option>
                                     <option value="hard">Hard/difficult to pass</option>
@@ -2247,7 +1995,7 @@
                             </div>
                             <div class="field">
                                 <label for="bmStraining">Straining During BM</label>
-                                <select id="bmStraining">
+                                <select id="bmStraining" aria-label="Straining During BM">
                                     <option value="">Select...</option>
                                     <option value="none">No straining</option>
                                     <option value="mild">Mild straining</option>
@@ -2362,7 +2110,7 @@
                         <div class="form-grid cols-3">
                             <div class="field">
                                 <label for="liftingCompliance">Lifting Restriction Compliance</label>
-                                <select id="liftingCompliance">
+                                <select id="liftingCompliance" aria-label="Lifting Restriction Compliance">
                                     <option value="">Select...</option>
                                     <option value="compliant">Compliant - No lifting >5-10 lbs</option>
                                     <option value="minor-violation">Minor violation (lifted 10-15 lbs)</option>
@@ -2372,7 +2120,7 @@
                             </div>
                             <div class="field">
                                 <label for="pushPullCompliance">Pushing/Pulling Activities</label>
-                                <select id="pushPullCompliance">
+                                <select id="pushPullCompliance" aria-label="Pushing/Pulling Activities">
                                     <option value="">Select...</option>
                                     <option value="avoided">Avoided all pushing/pulling</option>
                                     <option value="light">Light pushing/pulling only</option>
@@ -2382,7 +2130,7 @@
                             </div>
                             <div class="field">
                                 <label for="armMovement">Arm Movement Restrictions</label>
-                                <select id="armMovement">
+                                <select id="armMovement" aria-label="Arm Movement Restrictions">
                                     <option value="">Select...</option>
                                     <option value="compliant">Compliant - No reaching overhead</option>
                                     <option value="occasional">Occasional overhead reaching</option>
@@ -2394,7 +2142,7 @@
                         <div class="form-grid cols-3" style="margin-top:12px">
                             <div class="field">
                                 <label for="drivingStatus">Driving Status</label>
-                                <select id="drivingStatus">
+                                <select id="drivingStatus" aria-label="Driving Status">
                                     <option value="">Select...</option>
                                     <option value="not-driving">Not driving (compliant)</option>
                                     <option value="passenger">Passenger only</option>
@@ -2404,7 +2152,7 @@
                             </div>
                             <div class="field">
                                 <label for="coughSplinting">Cough Splinting with Pillow</label>
-                                <select id="coughSplinting">
+                                <select id="coughSplinting" aria-label="Cough Splinting with Pillow">
                                     <option value="">Select...</option>
                                     <option value="always">Always use pillow to splint</option>
                                     <option value="usually">Usually remember</option>
@@ -2414,7 +2162,7 @@
                             </div>
                             <div class="field">
                                 <label for="sternumShift">Felt Sternum "Give" or Shift Today</label>
-                                <select id="sternumShift">
+                                <select id="sternumShift" aria-label="Felt Sternum "Give" or Shift Today">
                                     <option value="">Select...</option>
                                     <option value="no">No - sternum feels stable</option>
                                     <option value="minor">Minor sensation of movement</option>
@@ -2494,7 +2242,7 @@
                         <div class="form-grid cols-3" style="margin-top:12px">
                             <div class="field">
                                 <label for="urineOutput">Urine Output</label>
-                                <select id="urineOutput">
+                                <select id="urineOutput" aria-label="Urine Output">
                                     <option value="">Select...</option>
                                     <option value="normal">Normal/adequate</option>
                                     <option value="decreased">Decreased</option>
@@ -2504,7 +2252,7 @@
                             </div>
                             <div class="field">
                                 <label for="urineColor">Urine Color</label>
-                                <select id="urineColor">
+                                <select id="urineColor" aria-label="Urine Color">
                                     <option value="">Select...</option>
                                     <option value="pale-yellow">Pale yellow (well hydrated)</option>
                                     <option value="yellow">Yellow (normal)</option>
@@ -2532,7 +2280,7 @@
                             <div class="field">
                                 <label>Anticoagulant</label>
                                 <div class="form-grid cols-2" style="gap:8px">
-                                    <select id="anticoagType">
+                                    <select id="anticoagType" aria-label="Anticoagulant Type">
                                         <option value="">Select Type...</option>
                                         <option value="warfarin">Warfarin</option>
                                         <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
@@ -2858,7 +2606,7 @@
                         <div class="form-grid cols-2">
                             <div class="field">
                                 <label for="onWarfarin">Currently Taking Warfarin?</label>
-                                <select id="onWarfarin">
+                                <select id="onWarfarin" aria-label="Currently Taking Warfarin?">
                                     <option value="">Select...</option>
                                     <option value="yes">Yes - actively taking Warfarin</option>
                                     <option value="no">No - on different anticoagulant</option>
@@ -2867,7 +2615,7 @@
                             </div>
                             <div class="field">
                                 <label for="vitaminKConsistency">Dietary Vitamin K Consistency</label>
-                                <select id="vitaminKConsistency">
+                                <select id="vitaminKConsistency" aria-label="Dietary Vitamin K Consistency">
                                     <option value="">Select...</option>
                                     <option value="consistent">Consistent - eat similar amounts daily</option>
                                     <option value="variable">Variable - intake changes day to day</option>
@@ -2975,7 +2723,7 @@
                         </div>
                         <div class="field" style="margin-top:12px">
                             <label for="vitaminKSupplement">Vitamin K Supplement Use</label>
-                            <select id="vitaminKSupplement">
+                            <select id="vitaminKSupplement" aria-label="Vitamin K Supplement Use">
                                 <option value="">Select...</option>
                                 <option value="none">None</option>
                                 <option value="multivitamin">Multivitamin (contains Vitamin K)</option>
@@ -3006,7 +2754,7 @@
                             </div>
                             <div class="field">
                                 <label for="cardiacRehab">Cardiac Rehab Session</label>
-                                <select id="cardiacRehab">
+                                <select id="cardiacRehab" aria-label="Cardiac Rehab Session">
                                     <option value="">Select...</option>
                                     <option value="no">Not today</option>
                                     <option value="yes-completed">Yes - completed</option>
@@ -3016,7 +2764,7 @@
                             </div>
                             <div class="field">
                                 <label for="activityTolerance">Activity Tolerance</label>
-                                <select id="activityTolerance">
+                                <select id="activityTolerance" aria-label="Activity Tolerance">
                                     <option value="">Select...</option>
                                     <option value="excellent">Excellent - no limitations</option>
                                     <option value="good">Good - minor limitations</option>
@@ -3031,7 +2779,7 @@
                             </div>
                             <div class="field">
                                 <label for="exerciseSOB">Exercise-Related SOB</label>
-                                <select id="exerciseSOB">
+                                <select id="exerciseSOB" aria-label="Exercise-Related SOB">
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="mild">Mild - expected</option>
@@ -3154,7 +2902,7 @@
                         <div class="form-grid cols-3">
                             <div class="field">
                                 <label for="cycleStatus">Cycle Status</label>
-                                <select id="cycleStatus">
+                                <select id="cycleStatus" aria-label="Cycle Status">
                                     <option value="">Select...</option>
                                     <option value="before">Before period (Follicular phase)</option>
                                     <option value="during">During period (Menstruation)</option>
@@ -3176,7 +2924,7 @@
                         <div class="form-grid cols-2" style="margin-top:12px">
                             <div class="field">
                                 <label for="flowHeaviness">Flow Heaviness (if during period)</label>
-                                <select id="flowHeaviness">
+                                <select id="flowHeaviness" aria-label="Flow Heaviness (if during period)">
                                     <option value="">Select...</option>
                                     <option value="spotting">Spotting</option>
                                     <option value="light">Light</option>
@@ -3453,7 +3201,7 @@
                             <div class="form-grid cols-2" style="margin-top:8px">
                                 <div class="field">
                                     <label for="bpArm">Measurement Arm</label>
-                                    <select id="bpArm">
+                                    <select id="bpArm" aria-label="Measurement Arm">
                                         <option value="">Select...</option>
                                         <option value="left">Left arm</option>
                                         <option value="right">Right arm</option>
@@ -3461,7 +3209,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="bpPosition">Position During Measurement</label>
-                                    <select id="bpPosition">
+                                    <select id="bpPosition" aria-label="Position During Measurement">
                                         <option value="">Select...</option>
                                         <option value="seated-rest">Seated, after 5min rest</option>
                                         <option value="seated-immediate">Seated, immediate</option>
@@ -3493,7 +3241,7 @@
                             <div class="form-grid cols-2" style="margin-top:8px">
                                 <div class="field">
                                     <label for="pulseOxFinger">Finger Used</label>
-                                    <select id="pulseOxFinger">
+                                    <select id="pulseOxFinger" aria-label="Finger Used">
                                         <option value="">Select...</option>
                                         <option value="index">Index finger</option>
                                         <option value="middle">Middle finger</option>
@@ -3502,7 +3250,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="pulseOxQuality">Signal Quality</label>
-                                    <select id="pulseOxQuality">
+                                    <select id="pulseOxQuality" aria-label="Signal Quality">
                                         <option value="">Select...</option>
                                         <option value="excellent">Excellent (strong signal)</option>
                                         <option value="good">Good</option>
@@ -3528,7 +3276,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="scaleTimimg">Measurement Timing</label>
-                                    <select id="scaleTimimg">
+                                    <select id="scaleTimimg" aria-label="Measurement Timing">
                                         <option value="">Select...</option>
                                         <option value="morning-empty">Morning, empty bladder</option>
                                         <option value="morning-after-eating">Morning, after eating</option>
@@ -3550,7 +3298,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="pacemakerTransmission">Transmission Status</label>
-                                    <select id="pacemakerTransmission">
+                                    <select id="pacemakerTransmission" aria-label="Transmission Status">
                                         <option value="">Select...</option>
                                         <option value="successful">Successful transmission</option>
                                         <option value="failed">Failed transmission</option>
@@ -3560,7 +3308,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="pacemakerAlerts">Any Alerts from Device?</label>
-                                    <select id="pacemakerAlerts">
+                                    <select id="pacemakerAlerts" aria-label="Any Alerts from Device?">
                                         <option value="">Select...</option>
                                         <option value="none">No alerts</option>
                                         <option value="battery">Battery alert</option>
@@ -3616,7 +3364,7 @@
                             <div class="field">
                                 <label>Anticoagulant Type</label>
                                 <div class="form-grid cols-2" style="gap:8px">
-                                    <select id="physAnticoagType">
+                                    <select id="physAnticoagType" aria-label="Anticoagulant Type">
                                         <option value="">Select Type...</option>
                                         <option value="warfarin">Warfarin</option>
                                         <option value="rivaroxaban">Rivaroxaban (Xarelto)</option>
@@ -3631,7 +3379,7 @@
                             </div>
                             <div class="field" id="warfarinFields" style="display:none">
                                 <label for="inrProvider">INR Managing Provider</label>
-                                <select id="inrProvider">
+                                <select id="inrProvider" aria-label="INR Managing Provider">
                                     <option value="">Select...</option>
                                     <option value="cardiologist">Cardiologist</option>
                                     <option value="pcp">Primary Care Physician</option>
@@ -3663,7 +3411,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="warfarinDoseChange">Dose Change Instructions</label>
-                                    <select id="warfarinDoseChange">
+                                    <select id="warfarinDoseChange" aria-label="Dose Change Instructions">
                                         <option value="">Select...</option>
                                         <option value="no-change">No change - continue same dose</option>
                                         <option value="increase">Increase dose</option>
@@ -3687,7 +3435,7 @@
                                     </div>
                                     <div class="field">
                                         <label for="nextINRLocation">Check Location</label>
-                                        <select id="nextINRLocation">
+                                        <select id="nextINRLocation" aria-label="Check Location">
                                             <option value="">Select...</option>
                                             <option value="clinic">Clinic/Office</option>
                                             <option value="lab">Independent Lab</option>
@@ -3812,7 +3560,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="pcpInterval">Recommended Follow-Up Interval</label>
-                                    <select id="pcpInterval">
+                                    <select id="pcpInterval" aria-label="Recommended Follow-Up Interval">
                                         <option value="">Select...</option>
                                         <option value="1-week">1 week</option>
                                         <option value="2-weeks">2 weeks</option>
@@ -3850,7 +3598,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="cardioInterval">Recommended Follow-Up Interval</label>
-                                    <select id="cardioInterval">
+                                    <select id="cardioInterval" aria-label="Recommended Follow-Up Interval">
                                         <option value="">Select...</option>
                                         <option value="1-week">1 week</option>
                                         <option value="2-weeks">2 weeks</option>
@@ -3888,7 +3636,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="surgeonInterval">Recommended Follow-Up Interval</label>
-                                    <select id="surgeonInterval">
+                                    <select id="surgeonInterval" aria-label="Recommended Follow-Up Interval">
                                         <option value="">Select...</option>
                                         <option value="2-weeks">2 weeks</option>
                                         <option value="6-weeks">6 weeks</option>
@@ -3925,7 +3673,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="epInterval">Recommended Follow-Up Interval</label>
-                                    <select id="epInterval">
+                                    <select id="epInterval" aria-label="Recommended Follow-Up Interval">
                                         <option value="">Select...</option>
                                         <option value="3-months">3 months (pacemaker check)</option>
                                         <option value="6-months">6 months</option>
@@ -4170,6 +3918,21 @@
         </div>
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            createPainScale('chestPainScale', 'chestPain');
+            createPainScale('bodyPainScale', 'bodyPain');
+            createWellbeingScale();
+            createADLScales();
+            initPHQ9();
+            restoreFormDraft();  // If this exists
+            addRealTimeValidation();
+            // Add any other init functions here, like createDoseTracker calls
+            createDoseTracker('#betaBlockerDoseTracker', 'betaBlocker', 2);
+            createDoseTracker('#diureticDoseTracker', 'diuretic', 2);
+            createDoseTracker('#anticoagulantDoseTracker', 'anticoagulant', 1);
+            createDoseTracker('#antiarrhythmicDoseTracker', 'antiarrhythmic', 1);
+            // Etc.
+        });
         // HIPAA Compliance: Encrypt localStorage
         const SECRET_KEY = 'heartbeat-hipaa-2025-xai';
         function encryptData(data) {
@@ -4365,8 +4128,6 @@
                 container.appendChild(btn);
             }
         }
-        createPainScale('chestPainScale', 'chestPain');
-        createPainScale('bodyPainScale', 'bodyPain');
         // Generate wellbeing scale with ARIA
         function createWellbeingScale() {
             const container = document.getElementById('wellbeingScale');
@@ -4401,7 +4162,6 @@
                 container.appendChild(btn);
             }
         }
-        createWellbeingScale();
         // Generate ADL scales with ARIA
         function createADLScales() {
             document.querySelectorAll('.adl-scale').forEach(container => {
@@ -4439,7 +4199,6 @@
                 }
             });
         }
-        createADLScales();
         // Walking sessions management
         let walkingSessionCount = 0;
         function addWalkingSession() {
@@ -4558,10 +4317,6 @@
             doseInput.addEventListener('change', updateTracker);
             updateTracker();
         }
-        createDoseTracker('#betaBlockerDoseTracker', 'betaBlocker', 2);
-        createDoseTracker('#diureticDoseTracker', 'diuretic', 2);
-        createDoseTracker('#anticoagulantDoseTracker', 'anticoagulant', 1);
-        createDoseTracker('#antiarrhythmicDoseTracker', 'antiarrhythmic', 1);
         // Sync Anticoagulant Across Tabs
         function syncAnticoag() {
             const type = document.getElementById('anticoagType').value;
@@ -4736,7 +4491,6 @@
                 }
             }
         }
-        initPHQ9();
         // Exercise Prescription vs Actual Comparison
         function updateExerciseComparisons() {
             const walkTarget = safeParseFloat(document.getElementById('walkTargetDistance').value);
@@ -4941,7 +4695,7 @@
                 }
             }
             if (entry.oxygenSat) {
-                const ox = safeParseInt(entry.oxygenSat);
+                const ox= safeParseInt(entry.oxygenSat);
                 if (!isNaN(ox)) {
                     if (ox < 90) riskPoints += weights.vitals * 0.35;
                     else if (ox < 92) riskPoints += weights.vitals * 0.25;
@@ -5076,26 +4830,6 @@
         function scrollToSection(sectionId) {
             document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
         }
-        // Tab navigation with unlock
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                if (this.dataset.tab === 'physician-review' && !unlockPhysicianTab()) return;
-                document.querySelectorAll('.tab-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.setAttribute('aria-selected', 'false');
-                });
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-                this.setAttribute('aria-selected', 'true');
-                document.getElementById(this.dataset.tab + '-panel').classList.add('active');
-            });
-            btn.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    btn.click();
-                }
-            });
-        });
         // Auto-save form state (encrypted)
         function saveFormDraft() {
             const formData = {};
@@ -5117,7 +4851,7 @@
             setEncryptedStorage('formDraft', formData);
             logAudit('draft-save');
         }
-        // Restore form draft
+        // Restore form draft on load
         function restoreFormDraft() {
             const draft = getEncryptedStorage('formDraft', {});
             Object.keys(draft).forEach(key => {
@@ -5160,7 +4894,6 @@
             calculateFluidBalance();
             checkProviderStatuses();
             updateExerciseComparisons();
-            initPHQ9();
             syncAnticoag();
             updateSectionBadges({});
             // Dummy for init
@@ -5182,9 +4915,580 @@
                 setEncryptedStorage('formDraft', {});
             }
         });
-        // Restore draft on load
-        document.addEventListener('DOMContentLoaded', restoreFormDraft);
-        // Initialize saved context
+        // Validate required fields
+        const requiredFields = ['entryDate', 'entryTime'];
+        let isValid = true;
+        requiredFields.forEach(id => {
+            const field = document.getElementById(id);
+            if (!field.value) {
+                field.style.borderColor = 'var(--bad)';
+                isValid = false;
+            }
+        });
+        if (!isValid) {
+            alert('Please fill in all required fields (Date, Time).');
+            return;
+        }
+        // Tab navigation with unlock
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.dataset.tab === 'physician-review' && !physicianUnlocked) {
+                    if (!unlockPhysicianTab()) return;
+                }
+                
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                const panel = document.getElementById(this.dataset.tab + '-panel');
+                if (panel) panel.classList.add('active');
+            });
+            btn.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    btn.click();
+                }
+            });
+        });
+        // Initial render
+        renderEntries();
+        function updateAnalytics(filteredEntries) {
+            if (filteredEntries.length < 2) return;
+            
+            // Comment out or remove the broken correlation code
+            // Simple trend analysis instead:
+            const weights = filteredEntries.map(e => parseFloat(e.weight) || 0);
+            if (weights.length > 3) {
+                const recent = weights.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
+                const older = weights.slice(3, 6).reduce((a, b) => a + b, 0) / Math.min(3, weights.length - 3);
+                if (recent - older > 2) {
+                    console.log('Weight trending upward');
+                    // Or show in UI: document.getElementById('some-alert').textContent = 'Weight trending up!';
+                }
+            }
+        }
+        function updateCharts(filteredEntries) {
+            const ctxWeight = document.getElementById('weightChart').getContext('2d');
+            const ctxPain = document.getElementById('painChart').getContext('2d');
+            const ctxPhq = document.getElementById('phq9Chart').getContext('2d');
+            
+            const dates = filteredEntries.map(e => e.date).reverse();
+            const weights = filteredEntries.map(e => e.weight).reverse();
+            const chestPains = filteredEntries.map(e => e.chestPain).reverse();
+            const phqScores = filteredEntries.map(e => e.phq9Score).reverse();
+            
+            new Chart(ctxWeight, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Weight',
+                        data: weights,
+                        borderColor: '#60a5fa',  // Hex for --accent (or use 'var(--accent)' if in CSS context)
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: false }
+                    }
+                }
+            });
+            
+            new Chart(ctxPain, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Chest Pain',
+                        data: chestPains,
+                        borderColor: '#ec4899',  // Hex for --pink
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { min: 0, max: 10 }
+                    }
+                }
+            });
+            
+            new Chart(ctxPhq, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'PHQ-9 Score',
+                        data: phqScores,
+                        borderColor: '#06b6d4',  // Hex for --cyan
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { min: 0, max: 27 }
+                    }
+                }
+            });
+        }
+        // Filter entries
+        function filterEntries() {
+            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
+            const dateStart = document.getElementById('historyDateStart').value;
+            const dateEnd = document.getElementById('historyDateEnd').value;
+            const filterFn = entry => {
+                let matchesSearch = true;
+                let matchesDate = true;
+                if (searchTerm) {
+                    matchesSearch = (
+                        (entry.notes || '').toLowerCase().includes(searchTerm) ||
+                        (entry.wellbeingSummary || '').toLowerCase().includes(searchTerm) ||
+                        (entry.recoveryAssessment?.status || '').toLowerCase().includes(searchTerm) ||
+                        (entry.therapistNotes || '').toLowerCase().includes(searchTerm)
+                    );
+                }
+                if (dateStart || dateEnd) {
+                    const entryDate = new Date(entry.date);
+                    if (dateStart) {
+                        const start = new Date(dateStart);
+                        matchesDate = matchesDate && entryDate >= start;
+                    }
+                    if (dateEnd) {
+                        const end = new Date(dateEnd);
+                        matchesDate = matchesDate && entryDate <= end;
+                    }
+                }
+                return matchesSearch && matchesDate;
+            };
+            renderEntries(false, filterFn);
+        }
+        document.getElementById('historySearch').addEventListener('input', filterEntries);
+        document.getElementById('historyDateStart').addEventListener('change', filterEntries);
+        document.getElementById('historyDateEnd').addEventListener('change', filterEntries);
+        // Render entries with pinned, incremental
+        function renderEntries(incremental = false, filterFn = null) {
+            const container = document.getElementById('entriesContainer');
+            const filteredEntries = filterFn ? entries.filter(filterFn) : entries;
+            if (filteredEntries.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-state';
+                emptyDiv.innerHTML = `
+                    <p style="font-size:3rem;margin-bottom:12px">💓</p>
+                    <p>No entries yet. Create your first entry above!</p>
+                `;
+                container.innerHTML = '';
+                container.appendChild(emptyDiv);
+                document.getElementById('chartsContainer').style.display = 'none';
+                return;
+            }
+            document.getElementById('chartsContainer').style.display = 'block';
+            if (!incremental) {
+                container.innerHTML = '';
+            }
+            const entriesToRender = incremental ? [filteredEntries[0]] : filteredEntries;
+            entriesToRender.forEach((entry, index) => {
+                const entryCard = document.createElement('div');
+                entryCard.className = `entry-card ${index === 0 ? 'pinned' : ''}`;
+                const assessment = entry.recoveryAssessment;
+                entryCard.innerHTML = `
+                    <div class="entry-header">
+                        <span class="entry-date">${entry.date}</span>
+                        <span class="entry-time">${entry.time}</span>
+                    </div>
+                    <div class="recovery-score-display ${assessment.className}">
+                        <div>
+                            <div class="score-number">${assessment.recoveryScore}</div>
+                            <div class="score-grade">${assessment.grade}</div>
+                        </div>
+                        <div class="score-label">${assessment.status}</div>
+                    </div>
+                    <div class="entry-data">
+                        <div class="data-point">
+                            <div class="data-label">Heart Rate</div>
+                            <div class="data-value">${entry.heartRate || 'N/A'} bpm</div>
+                        </div>
+                        <div class="data-point">
+                            <div class="data-label">O₂ Sat</div>
+                            <div class="data-value">${entry.oxygenSat || 'N/A'}%</div>
+                        </div>
+                        <div class="data-point">
+                            <div class="data-label">Weight</div>
+                            <div class="data-value">${entry.weight || 'N/A'}</div>
+                        </div>
+                        <!-- Add more data points as needed -->
+                    </div>
+                `;
+                if (incremental) {
+                    container.insertBefore(entryCard, container.firstChild);
+                } else {
+                    container.appendChild(entryCard);
+                }
+            });
+            // Update charts
+            updateCharts(filteredEntries);
+            // Update analytics
+            updateAnalytics(filteredEntries);
+        }
+        // Local storage for entries (encrypted)
+        let entries = getEncryptedStorage('cardiacEntries', []);
+        // Form submission with validation, toast, pinned, etc.
+        document.getElementById('dataForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Validate required fields
+            const requiredFields = ['entryDate', 'entryTime'];
+            let isValid = true;
+            requiredFields.forEach(id => {
+                const field = document.getElementById(id);
+                if (!field.value) {
+                    field.style.borderColor = 'var(--bad)';
+                    isValid = false;
+                }
+            });
+            if (!isValid) {
+                alert('Please fill in all required fields (Date, Time).');
+                return;
+            }
+            // Collect data
+            const formData = {
+                date: document.getElementById('entryDate').value,
+                time: document.getElementById('entryTime').value,
+                originalSymptoms: Array.from(document.querySelectorAll('#originalSymptomsGroup input:checked')).map(cb => cb.value),
+                procedures: Array.from(document.getElementById('procedures').selectedOptions).map(opt => opt.value),
+                hospitalStay: document.getElementById('hospitalStay').value,
+                hospitalComplications: document.getElementById('hospitalComplications').value,
+                weight: document.getElementById('weight').value,
+                bloodPressure: document.getElementById('bloodPressure').value,
+                heartRate: document.getElementById('heartRate').value,
+                oxygenSat: document.getElementById('oxygenSat').value,
+                temperature: document.getElementById('temperature').value,
+                respRate: document.getElementById('respRate').value,
+                rhythm: document.getElementById('rhythm').value,
+                palpitations: document.getElementById('palpitations').value,
+                pacemakerIssues: document.getElementById('pacemakerIssues').value,
+                chestPain: document.querySelector('#chestPainScale .selected')?.dataset.value,
+                bodyPain: document.querySelector('#bodyPainScale .selected')?.dataset.value,
+                chestPainTrend: document.getElementById('chestPainTrend').value,
+                bodyPainTrend: document.getElementById('bodyPainTrend').value,
+                painLocation: document.getElementById('painLocation').value,
+                painType: document.getElementById('painType').value,
+                incisionStatus: document.getElementById('incisionStatus').value,
+                painPosition: document.getElementById('painPosition').value,
+                painTrigger: document.getElementById('painTrigger').value,
+                painActivity: document.getElementById('painActivity').value,
+                drainageAmount: document.getElementById('drainageAmount').value,
+                drainageColor: document.getElementById('drainageColor').value,
+                woundWarmth: document.getElementById('woundWarmth').value,
+                rednessExtent: document.getElementById('rednessExtent').value,
+                woundEdges: document.getElementById('woundEdges').value,
+                surroundingSkin: document.getElementById('surroundingSkin').value,
+                woundPhotos: window.woundPhotosData || [],
+                shortnessOfBreath: document.getElementById('shortnessOfBreath').value,
+                fatigue: document.getElementById('fatigue').value,
+                dizziness: document.getElementById('dizziness').value,
+                swelling: document.getElementById('swelling').value,
+                nausea: document.getElementById('nausea').value,
+                sleepHours: document.getElementById('sleepHours').value,
+                sleepPosition: document.getElementById('sleepPosition').value,
+                wakingSOB: document.getElementById('wakingSOB').value,
+                cough: document.getElementById('cough').value,
+                mood: document.getElementById('mood').value,
+                sternumClicking: document.getElementById('sternumClicking').value,
+                bowelMovement: document.getElementById('bowelMovement').value,
+                stoolConsistency: document.getElementById('stoolConsistency').value,
+                bmStraining: document.getElementById('bmStraining').value,
+                complicationSymptoms: Array.from(document.querySelectorAll('input[name="pericardiotomy"]:checked, input[name="pleural"]:checked, input[name="pericardial"]:checked, input[name="tamponade"]:checked')).map(cb => cb.value),
+                liftingCompliance: document.getElementById('liftingCompliance').value,
+                pushPullCompliance: document.getElementById('pushPullCompliance').value,
+                armMovement: document.getElementById('armMovement').value,
+                drivingStatus: document.getElementById('drivingStatus').value,
+                coughSplinting: document.getElementById('coughSplinting').value,
+                sternumShift: document.getElementById('sternumShift').value,
+                adlScores: {},
+                fluidRestriction: document.getElementById('fluidRestriction').value,
+                fluidIntake: document.getElementById('fluidIntake').value,
+                urineOutput: document.getElementById('urineOutput').value,
+                urineColor: document.getElementById('urineColor').value,
+                diuretic: document.getElementById('diuretic').value,
+                diureticFreq: document.getElementById('diureticFreq').value,
+                anticoagType: document.getElementById('anticoagType').value,
+                anticoagDose: document.getElementById('anticoagDose').value,
+                anticoagulantFreq: document.getElementById('anticoagulantFreq').value,
+                betaBlocker: document.getElementById('betaBlocker').value,
+                betaBlockerFreq: document.getElementById('betaBlockerFreq').value,
+                antiarrhythmic: document.getElementById('antiarrhythmic').value,
+                antiarrhythmicFreq: document.getElementById('antiarrhythmicFreq').value,
+                aceInhibitor: document.getElementById('aceInhibitor').value,
+                aceInhibitorFreq: document.getElementById('aceInhibitorFreq').value,
+                painMed: document.getElementById('painMed').value,
+                painMedFreq: document.getElementById('painMedFreq').value,
+                potassium: document.getElementById('potassium').value,
+                potassiumFreq: document.getElementById('potassiumFreq').value,
+                otherCardiacMeds: document.getElementById('otherCardiacMeds').value,
+                otherCardiacMedsFreq: document.getElementById('otherCardiacMedsFreq').value,
+                missedDoseReasons: document.getElementById('missedDoseReasons').value,
+                sideEffects: {},
+                onWarfarin: document.getElementById('onWarfarin').value,
+                vitaminKConsistency: document.getElementById('vitaminKConsistency').value,
+                vitaminKFoods: Array.from(document.querySelectorAll('input[name="vitaminK"]:checked')).map(cb => cb.value),
+                vitaminKServings: document.getElementById('vitaminKServings').value,
+                vitaminKSupplement: document.getElementById('vitaminKSupplement').value,
+                vitaminKNotes: document.getElementById('vitaminKNotes').value,
+                walkingSessions: Array.from(document.querySelectorAll('#walkingSessionsContainer input')).map(inp => inp.value),
+                steps: document.getElementById('steps').value,
+                cardiacRehab: document.getElementById('cardiacRehab').value,
+                activityTolerance: document.getElementById('activityTolerance').value,
+                stairs: document.getElementById('stairs').value,
+                exerciseSOB: document.getElementById('exerciseSOB').value,
+                walkTargetDistance: document.getElementById('walkTargetDistance').value,
+                walkActualDistance: document.getElementById('walkActualDistance').value,
+                exerciseTargetDuration: document.getElementById('exerciseTargetDuration').value,
+                exerciseActualDuration: document.getElementById('exerciseActualDuration').value,
+                exerciseTargetHR: document.getElementById('exerciseTargetHR').value,
+                exerciseActualHR: document.getElementById('exerciseActualHR').value,
+                exerciseMaxHR: document.getElementById('exerciseMaxHR').value,
+                exercisePeakHR: document.getElementById('exercisePeakHR').value,
+                exerciseNotes: document.getElementById('exerciseNotes').value,
+                nextRehabDate: document.getElementById('nextRehabDate').value,
+                rehabFrequency: document.getElementById('rehabFrequency').value,
+                therapistNotes: document.getElementById('therapistNotes').value,
+                cycleStatus: document.getElementById('cycleStatus').value,
+                cycleDay: document.getElementById('cycleDay').value,
+                daysRelativeToPeriod: document.getElementById('daysRelativeToPeriod').value,
+                flowHeaviness: document.getElementById('flowHeaviness').value,
+                hormonalSymptoms: document.getElementById('hormonalSymptoms').value,
+                wellbeingScore: document.querySelector('#wellbeingScale .selected')?.dataset.value,
+                wellbeingSummary: document.getElementById('wellbeingSummary').value,
+                phq9Score: parseInt(document.getElementById('phq9Score').textContent) || 0,
+                phq9Severity: document.getElementById('phq9Severity').textContent,
+                warningSymptoms: Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(cb => cb.value),
+                notes: document.getElementById('notes').value,
+                bpDeviceBrand: document.getElementById('bpDeviceBrand').value,
+                bpDeviceReading: document.getElementById('bpDeviceReading').value,
+                bpDevicePulse: document.getElementById('bpDevicePulse').value,
+                bpArm: document.getElementById('bpArm').value,
+                bpPosition: document.getElementById('bpPosition').value,
+                pulseOxBrand: document.getElementById('pulseOxBrand').value,
+                pulseOxReading: document.getElementById('pulseOxReading').value,
+                pulseOxHR: document.getElementById('pulseOxHR').value,
+                pulseOxFinger: document.getElementById('pulseOxFinger').value,
+                pulseOxQuality: document.getElementById('pulseOxQuality').value,
+                scaleBrand: document.getElementById('scaleBrand').value,
+                scaleReading: document.getElementById('scaleReading').value,
+                scaleTimimg: document.getElementById('scaleTimimg').value,
+                pacemakerSystem: document.getElementById('pacemakerSystem').value,
+                pacemakerTransmission: document.getElementById('pacemakerTransmission').value,
+                pacemakerAlerts: document.getElementById('pacemakerAlerts').value,
+                pacemakerAtrialPaced: document.getElementById('pacemakerAtrialPaced').value,
+                pacemakerVentricularPaced: document.getElementById('pacemakerVentricularPaced').value,
+                pacemakerBattery: document.getElementById('pacemakerBattery').value,
+                pacemakerAtrialImpedance: document.getElementById('pacemakerAtrialImpedance').value,
+                pacemakerVentricularImpedance: document.getElementById('pacemakerVentricularImpedance').value,
+                pacemakerData: document.getElementById('pacemakerData').value,
+                deviceNotes: document.getElementById('deviceNotes').value,
+                physAnticoagType: document.getElementById('physAnticoagType').value,
+                physAnticoagDose: document.getElementById('physAnticoagDose').value,
+                inrProvider: document.getElementById('inrProvider').value,
+                inrProviderName: document.getElementById('inrProviderName').value,
+                inrProviderPhone: document.getElementById('inrProviderPhone').value,
+                todayINR: document.getElementById('todayINR').value,
+                todayWarfarinDose: document.getElementById('todayWarfarinDose').value,
+                warfarinDoseChange: document.getElementById('warfarinDoseChange').value,
+                warfarinNewDoseInstructions: document.getElementById('warfarinNewDoseInstructions').value,
+                nextINRDate: document.getElementById('nextINRDate').value,
+                nextINRLocation: document.getElementById('nextINRLocation').value,
+                nextINRTime: document.getElementById('nextINRTime').value,
+                inrHistory: Array.from(document.querySelectorAll('#inrHistoryContainer .inr-history-item')).map(item => {
+                    const inputs = item.querySelectorAll('input');
+                    return { date: inputs[0].value, inr: inputs[1].value, dose: inputs[2].value };
+                }),
+                anticoagNotes: document.getElementById('anticoagNotes').value,
+                inr: document.getElementById('inr').value,
+                potassiumLevel: document.getElementById('potassiumLevel').value,
+                magnesiumLevel: document.getElementById('magnesiumLevel').value,
+                bnp: document.getElementById('bnp').value,
+                creatinine: document.getElementById('creatinine').value,
+                hemoglobin: document.getElementById('hemoglobin').value,
+                rbc: document.getElementById('rbc').value,
+                wbc: document.getElementById('wbc').value,
+                crp: document.getElementById('crp').value,
+                fibrinogen: document.getElementById('fibrinogen').value,
+                nextLabDate: document.getElementById('nextLabDate').value,
+                pcpName: document.getElementById('pcpName').value,
+                pcpPhone: document.getElementById('pcpPhone').value,
+                pcpLastContact: document.getElementById('pcpLastContact').value,
+                pcpNextAppt: document.getElementById('pcpNextAppt').value,
+                pcpInterval: document.getElementById('pcpInterval').value,
+                cardioName: document.getElementById('cardioName').value,
+                cardioPhone: document.getElementById('cardioPhone').value,
+                cardioLastContact: document.getElementById('cardioLastContact').value,
+                cardioNextAppt: document.getElementById('cardioNextAppt').value,
+                cardioInterval: document.getElementById('cardioInterval').value,
+                surgeonName: document.getElementById('surgeonName').value,
+                surgeonPhone: document.getElementById('surgeonPhone').value,
+                surgeonLastContact: document.getElementById('surgeonLastContact').value,
+                surgeonNextAppt: document.getElementById('surgeonNextAppt').value,
+                surgeonInterval: document.getElementById('surgeonInterval').value,
+                epName: document.getElementById('epName').value,
+                epPhone: document.getElementById('epPhone').value,
+                epLastContact: document.getElementById('epLastContact').value,
+                epNextAppt: document.getElementById('epNextAppt').value,
+                epInterval: document.getElementById('epInterval').value,
+                rehabName: document.getElementById('rehabName').value,
+                rehabPhone: document.getElementById('rehabPhone').value,
+                rehabLastSession: document.getElementById('rehabLastSession').value,
+                rehabSessionsPerWeek: document.getElementById('rehabSessionsPerWeek').value,
+                rehabTotalSessions: document.getElementById('rehabTotalSessions').value,
+                rehabCompletedSessions: document.getElementById('rehabCompletedSessions').value,
+                recoveryOutcomes: Array.from(document.querySelectorAll('input[name="recoveryOutcome"]:checked')).map(cb => cb.value),
+                eventDate: document.getElementById('eventDate').value,
+                whatHappened: document.getElementById('whatHappened').value,
+                interventions: document.getElementById('interventions').value,
+                patientResponse: document.getElementById('patientResponse').value
+            };
+            document.querySelectorAll('.adl-scale').forEach(scale => {
+                const selected = scale.querySelector('.adl-btn.selected');
+                if (selected) formData.adlScores[scale.dataset.adl] = parseInt(selected.dataset.value);
+            });
+            document.querySelectorAll('.severity-scale').forEach(scale => {
+                const selected = scale.querySelector('.severity-btn.selected');
+                if (selected) formData.sideEffects[scale.dataset.effect] = parseInt(selected.dataset.value);
+            });
+            const oldLength = entries.length;
+            const recoveryAssessment = calculateRecoveryScore(formData);
+            formData.recoveryAssessment = recoveryAssessment;
+            formData.usedCustom = physicianUnlocked;
+            entries.unshift(formData);
+            setEncryptedStorage('cardiacEntries', entries);
+            syncToBackend(formData)
+                .then(() => console.log('Entry synced successfully'))
+                .catch(error => console.error('Sync error:', error));
+            logAudit('save-entry', { score: recoveryAssessment.recoveryScore });
+            // Update legend and why-status
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            const pillMap = { excellent: 'normalPill', good: 'normalPill', fair: 'watchPill', poor: 'alertPill', critical: 'alertPill' };
+            document.getElementById(pillMap[recoveryAssessment.className]).classList.add('active');
+            let breakdown = '';
+            for (let [k, v] of Object.entries(recoveryAssessment.subScores)) {
+                breakdown += `${k}: ${v}/${weights[k]}<br>`;
+            }
+            document.getElementById('statusBreakdown').innerHTML = breakdown;
+            document.getElementById('whyStatus').classList.add('open');
+            // Toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = `Logged: ${formData.date} - Score ${recoveryAssessment.recoveryScore}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+            // Alert
+            if (recoveryAssessment.className === 'critical') {
+                alert('🚨 CRITICAL RECOVERY SCORE!\n\n' + recoveryAssessment.message + '\n\nPlease contact your medical provider immediately.');
+            } else {
+                alert('✅ Entry saved successfully!\n\nRecovery Score: ' + recoveryAssessment.recoveryScore + '/100 (Grade ' + recoveryAssessment.grade + ')\n' + recoveryAssessment.status);
+            }
+            // Re-render and scroll
+            renderEntries(true);
+            document.getElementById('entriesContainer').scrollIntoView({ behavior: 'smooth' });
+            // Post-save check
+            if (entries.length !== oldLength + 1) {
+                alert('Save may have failed. Please retry.');
+                entries = getEncryptedStorage('cardiacEntries', []);
+            }
+            // Clear form
+            document.getElementById('clearForm').click();
+        });
+        // Device Integration - Web Bluetooth
+        async function connectBPDevice() {
+            try {
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [0x1810] }] // Blood Pressure service UUID
+                });
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService(0x1810);
+                const characteristic = await service.getCharacteristic(0x2A35); // Blood Pressure Measurement
+                const value = await characteristic.readValue();
+                const bp = parseIEEE11073Float(value); // Implement parser
+                document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
+                document.getElementById('heartRate').value = bp.pulse;
+            } catch (error) {
+                console.error('BP connect error:', e);
+                alert('Failed to connect to BP device.');
+            }
+        }
+        async function connectPulseOxDevice() {
+            try {
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [0x1822] }] // Pulse Oximeter service UUID
+                });
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService(0x1822);
+                const characteristic = await service.getCharacteristic(0x2A5F); // PLX Spot-Check Measurement
+                const value = await characteristic.readValue();
+                const ox = parseIEEE11073Float(value); // Implement parser
+                document.getElementById('oxygenSat').value = ox.spO2;
+                document.getElementById('heartRate').value = ox.pulse;
+            } catch (error) {
+                console.error('Pulse Ox connect error:', error);
+                alert('Failed to connect to Pulse Ox device.');
+            }
+        }
+        // IEEE 11073 Parser (32-bit FLOAT)
+        function parseIEEE11073Float(dataview) {
+            const exponent = dataview.getInt8(3);
+            let mantissa = dataview.getInt32(0, true) & 0x00ffffff;
+            if (mantissa >= Math.pow(2, 23)) mantissa -= Math.pow(2, 24);
+            return mantissa * Math.pow(10, exponent);
+        }
+        // Real-time validation
+        function addRealTimeValidation() {
+            const validations = [
+                {
+                    id: 'heartRate',
+                    validate: val => {
+                        const num = parseInt(val);
+                        if (isNaN(num)) return { valid: false, message: 'Please enter a valid number' };
+                        if (num < 50 || num > 110) return { valid: false, message: 'Heart rate is outside safe range (50-110 bpm)' };
+                        if (num < 55 || num > 100) return { valid: false, message: 'Heart rate is outside target range (55-100 bpm)', warn: true };
+                        return { valid: true };
+                    }
+                },
+                {
+                    id: 'oxygenSat',
+                    validate: val => {
+                        const num = parseInt(val);
+                        if (isNaN(num)) return { valid: false, message: 'Please enter a valid number' };
+                        if (num < 90) return { valid: false, message: 'O2 saturation critically low (<90%)' };
+                        if (num < 92) return { valid: false, message: 'O2 saturation low (<92%)', warn: true };
+                        return { valid: true };
+                    }
+                },
+                // Add more validations for other fields
+            ];
+            validations.forEach(({ id, validate }) => {
+                const input = document.getElementById(id);
+                const errorEl = document.getElementById(`${id}Error`);
+                if (input && errorEl) {
+                    input.addEventListener('input', function () {
+                        const result = validate(this.value);
+                        if (!result.valid) {
+                            errorEl.textContent = result.message;
+                            errorEl.style.display = 'block';
+                            this.style.borderColor = result.warn ? 'var(--warn)' : 'var(--bad)';
+                        } else {
+                            errorEl.style.display = 'none';
+                            this.style.borderColor = 'rgba(255,255,255,0.12)';
+                        }
+                    });
+                }
+            });
+        }
+        // Initial saved context
         const savedProcedures = getEncryptedStorage('procedures', []);
         const savedHospitalStay = getEncryptedStorage('hospitalStay');
         const savedHospitalComplications = getEncryptedStorage('hospitalComplications');
@@ -5493,190 +5797,6 @@
             // Clear form
             document.getElementById('clearForm').click();
         });
-        // Filter entries
-        function filterEntries() {
-            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
-            const dateStart = document.getElementById('historyDateStart').value;
-            const dateEnd = document.getElementById('historyDateEnd').value;
-            const filterFn = entry => {
-                let matchesSearch = true;
-                let matchesDate = true;
-                if (searchTerm) {
-                    matchesSearch = (
-                        (entry.notes || '').toLowerCase().includes(searchTerm) ||
-                        (entry.wellbeingSummary || '').toLowerCase().includes(searchTerm) ||
-                        (entry.recoveryAssessment?.status || '').toLowerCase().includes(searchTerm) ||
-                        (entry.therapistNotes || '').toLowerCase().includes(searchTerm)
-                    );
-                }
-                if (dateStart || dateEnd) {
-                    const entryDate = new Date(entry.date);
-                    if (dateStart) {
-                        const start = new Date(dateStart);
-                        matchesDate = matchesDate && entryDate >= start;
-                    }
-                    if (dateEnd) {
-                        const end = new Date(dateEnd);
-                        matchesDate = matchesDate && entryDate <= end;
-                    }
-                }
-                return matchesSearch && matchesDate;
-            };
-            renderEntries(false, filterFn);
-        }
-        document.getElementById('historySearch').addEventListener('input', filterEntries);
-        document.getElementById('historyDateStart').addEventListener('change', filterEntries);
-        document.getElementById('historyDateEnd').addEventListener('change', filterEntries);
-        // Render entries with pinned, incremental
-        function renderEntries(incremental = false, filterFn = null) {
-            const container = document.getElementById('entriesContainer');
-            const filteredEntries = filterFn ? entries.filter(filterFn) : entries;
-            if (filteredEntries.length === 0) {
-                const emptyDiv = document.createElement('div');
-                emptyDiv.className = 'empty-state';
-                emptyDiv.innerHTML = `
-                    <p style="font-size:3rem;margin-bottom:12px">💓</p>
-                    <p>No entries yet. Create your first entry above!</p>
-                `;
-                container.innerHTML = '';
-                container.appendChild(emptyDiv);
-                document.getElementById('chartsContainer').style.display = 'none';
-                return;
-            }
-            document.getElementById('chartsContainer').style.display = 'block';
-            if (!incremental) {
-                container.innerHTML = '';
-            }
-            const entriesToRender = incremental ? [filteredEntries[0]] : filteredEntries;
-            entriesToRender.forEach((entry, index) => {
-                const entryCard = document.createElement('div');
-                entryCard.className = `entry-card ${index === 0 ? 'pinned' : ''}`;
-                const assessment = entry.recoveryAssessment;
-                entryCard.innerHTML = `
-                    <div class="entry-header">
-                        <span class="entry-date">${entry.date}</span>
-                        <span class="entry-time">${entry.time}</span>
-                    </div>
-                    <div class="recovery-score-display ${assessment.className}">
-                        <div>
-                            <div class="score-number">${assessment.recoveryScore}</div>
-                            <div class="score-grade">${assessment.grade}</div>
-                        </div>
-                        <div class="score-label">${assessment.status}</div>
-                    </div>
-                    <div class="entry-data">
-                        <div class="data-point">
-                            <div class="data-label">Heart Rate</div>
-                            <div class="data-value">${entry.heartRate || 'N/A'} bpm</div>
-                        </div>
-                        <div class="data-point">
-                            <div class="data-label">O₂ Sat</div>
-                            <div class="data-value">${entry.oxygenSat || 'N/A'}%</div>
-                        </div>
-                        <div class="data-point">
-                            <div class="data-label">Weight</div>
-                            <div class="data-value">${entry.weight || 'N/A'}</div>
-                        </div>
-                        <!-- Add more data points as needed -->
-                    </div>
-                `;
-                if (incremental) {
-                    container.insertBefore(entryCard, container.firstChild);
-                } else {
-                    container.appendChild(entryCard);
-                }
-            });
-            // Update charts
-            updateCharts(filteredEntries);
-            // Update analytics
-            updateAnalytics(filteredEntries);
-        }
-        // Update Charts with Chart.js
-        function updateCharts(filteredEntries) {
-            const ctxWeight = document.getElementById('weightChart').getContext('2d');
-            const ctxPain = document.getElementById('painChart').getContext('2d');
-            const ctxPhq = document.getElementById('phq9Chart').getContext('2d');
-            const dates = filteredEntries.map(e => e.date).reverse();
-            const weights = filteredEntries.map(e => e.weight).reverse();
-            const chestPains = filteredEntries.map(e => e.chestPain).reverse();
-            const phqScores = filteredEntries.map(e => e.phq9Score).reverse();
-            new Chart(ctxWeight, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Weight',
-                        data: weights,
-                        borderColor: var(--accent),
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: false }
-                    }
-                }
-            });
-            new Chart(ctxPain, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Chest Pain',
-                        data: chestPains,
-                        borderColor: var(--pink),
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { min: 0, max: 10 }
-                    }
-                }
-            });
-            new Chart(ctxPhq, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'PHQ-9 Score',
-                        data: phqScores,
-                        borderColor: var(--cyan),
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { min: 0, max: 27 }
-                    }
-                }
-            });
-        }
-        // Enhanced Analytics
-        function updateAnalytics(filteredEntries) {
-            if (filteredEntries.length < 2) return;
-            // Correlation matrix
-            const vars = ['heartRate', 'oxygenSat', 'weight', 'chestPain', 'phq9Score'];
-            const data = vars.map(v => filteredEntries.map(e => parseFloat(e[v]) || 0));
-            const correlationMatrix = math.correlation(data);
-            console.log('Correlation Matrix:', correlationMatrix);
-            // Predictive trend - simple linear regression for weight
-            const x = Array.from({length: filteredEntries.length}, (_, i) => i);
-            const y = data[2]; // weight
-            const slope = math.lsReg(x, y).slope;
-            if (slope > 0.5) {
-                alert('Trend Alert: Weight increasing rapidly. Monitor fluid intake.');
-            }
-            // Recovery trajectory - assume typical is linear decrease in pain
-            const typicalPain = [8, 6, 4, 2, 1]; // example
-            // Pattern recognition for complications
-            if (filteredEntries[0].shortnessOfBreath === 'at-rest' && filteredEntries[0].oxygenSat < 92) {
-                alert('Pattern Alert: Possible pulmonary complication.');
-            }
-        }
         // Device Integration - Web Bluetooth
         async function connectBPDevice() {
             try {
@@ -5720,52 +5840,50 @@
             return mantissa * Math.pow(10, exponent);
         }
         // Real-time validation
-        function addRealTimeValidation() {
-            const validations = [
-                {
-                    id: 'heartRate',
-                    validate: val => {
-                        const num = parseInt(val);
-                        if (isNaN(num)) return { valid: false, message: 'Please enter a valid number' };
-                        if (num < 50 || num > 110) return { valid: false, message: 'Heart rate is outside safe range (50-110 bpm)' };
-                        if (num < 55 || num > 100) return { valid: false, message: 'Heart rate is outside target range (55-100 bpm)', warn: true };
-                        return { valid: true };
-                    }
-                },
-                {
-                    id: 'oxygenSat',
-                    validate: val => {
-                        const num = parseInt(val);
-                        if (isNaN(num)) return { valid: false, message: 'Please enter a valid number' };
-                        if (num < 90) return { valid: false, message: 'O2 saturation critically low (<90%)' };
-                        if (num < 92) return { valid: false, message: 'O2 saturation low (<92%)', warn: true };
-                        return { valid: true };
-                    }
-                },
-                // Add more validations for other fields
-            ];
-            validations.forEach(({ id, validate }) => {
-                const input = document.getElementById(id);
-                const errorEl = document.getElementById(`${id}Error`);
-                if (input && errorEl) {
-                    input.addEventListener('input', function () {
-                        const result = validate(this.value);
-                        if (!result.valid) {
-                            errorEl.textContent = result.message;
-                            errorEl.style.display = 'block';
-                            this.style.borderColor = result.warn ? 'var(--warn)' : 'var(--bad)';
-                        } else {
-                            errorEl.style.display = 'none';
-                            this.style.borderColor = 'rgba(255,255,255,0.12)';
-                        }
-                    });
-                }
+        // Initial saved context
+        const savedProcedures = getEncryptedStorage('procedures', []);
+        const savedHospitalStay = getEncryptedStorage('hospitalStay');
+        const savedHospitalComplications = getEncryptedStorage('hospitalComplications');
+        if (savedProcedures.length) {
+            document.querySelectorAll('#procedures option').forEach(opt => {
+                if (savedProcedures.includes(opt.value)) opt.selected = true;
             });
         }
-        addRealTimeValidation();
-        // Initial render
-        renderEntries();
+        if (savedHospitalStay) document.getElementById('hospitalStay').value = savedHospitalStay;
+        if (savedHospitalComplications) document.getElementById('hospitalComplications').value = savedHospitalComplications;
+        // Save context to encrypted storage
+        document.getElementById('procedures').addEventListener('change', function () {
+            const selected = Array.from(this.selectedOptions).map(opt => opt.value);
+            setEncryptedStorage('procedures', selected);
+            logAudit('update-procedures', { procedures: selected });
+        });
+        document.getElementById('hospitalStay').addEventListener('change', function () {
+            setEncryptedStorage('hospitalStay', this.value);
+            logAudit('update-hospital-stay', { days: this.value });
+        });
+        document.getElementById('hospitalComplications').addEventListener('change', function () {
+            setEncryptedStorage('hospitalComplications', this.value);
+            logAudit('update-hospital-complications', { complication: this.value });
+        });
+        // Modals
+        function openScoringModal() {
+            document.getElementById('scoringModal').style.display = 'block';
+            logAudit('view-scoring-guide');
+        }
+        function closeScoringModal() {
+            document.getElementById('scoringModal').style.display = 'none';
+        }
+        function openWhatsNewModal() {
+            document.getElementById('whatsNewModal').style.display = 'block';
+        }
+        function closeWhatsNewModal() {
+            document.getElementById('whatsNewModal').style.display = 'none';
+        }
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
     </script>
 </body>
-
 </html>
