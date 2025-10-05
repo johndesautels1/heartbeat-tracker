@@ -4268,7 +4268,7 @@
                     slot.dataset.dose = i;
                     slot.dataset.status = 'pending';
                     slot.role = 'button';
-                    slot.tabindex = '0';
+                    slot.tabIndex = 0;
                     slot.addEventListener('click', function () {
                         if (this.dataset.status === 'pending') {
                             this.dataset.status = 'taken';
@@ -4651,8 +4651,8 @@
             content.classList.toggle('open');
             btn.textContent = content.classList.contains('open') ? '-' : '+';
         }
-        // Local storage for entries (encrypted)
-        let entries = getEncryptedStorage('cardiacEntries', []);
+        // Local storage for entries (encrypted) — duplicate declaration removed
+        // let entries = getEncryptedStorage('cardiacEntries', []);
         // Default Weights
         const defaultWeights = { vitals: 20, rhythm: 15, pain: 15, symptoms: 20, labs: 10, activity: 10, phq: 10 };
         let customWeights = getEncryptedStorage('customWeights', defaultWeights);
@@ -5414,8 +5414,10 @@
                 const characteristic = await service.getCharacteristic(0x2A35); // Blood Pressure Measurement
                 const value = await characteristic.readValue();
                 const bp = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('bloodPressure').value = bp.sys + '/' + bp.dia;
-                document.getElementById('heartRate').value = bp.pulse;
+                if (bp && typeof bp === 'object') {
+                    document.getElementById('bloodPressure').value = `${bp.sys}/${bp.dia}`;
+                    document.getElementById('heartRate').value = bp.pulse ?? '';
+                }
             } catch (error) {
                 console.error('BP connect error:', error);
                 alert('Failed to connect to BP device.');
@@ -5431,8 +5433,10 @@
                 const characteristic = await service.getCharacteristic(0x2A5F); // PLX Spot-Check Measurement
                 const value = await characteristic.readValue();
                 const ox = parseIEEE11073Float(value); // Implement parser
-                document.getElementById('oxygenSat').value = ox.spO2;
-                document.getElementById('heartRate').value = ox.pulse;
+                if (ox && typeof ox === 'object') {
+                    document.getElementById('oxygenSat').value = ox.spO2 ?? '';
+                    document.getElementById('heartRate').value = ox.pulse ?? '';
+                }
             } catch (error) {
                 console.error('Pulse Ox connect error:', error);
                 alert('Failed to connect to Pulse Ox device.');
